@@ -35,7 +35,7 @@ for passport in CLEAN_PASSPORTS:
         height, unit = re.compile(r'^(\d+)(in|cm)?$').match(passport['hgt']).groups()
         if unit == 'cm' and 150 <= int(height) <= 193:
             valid += 1
-        elif unit == 'in' and 59 <= int(height) <=  76:
+        elif unit == 'in' and 59 <= int(height) <= 76:
             valid += 1
     if valid == 8:
         VALID_PASSPORTS += 1

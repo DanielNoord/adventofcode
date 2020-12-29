@@ -142,6 +142,24 @@ def day5(input_file):
 
     print(f"The highest id is {max_id} and your seat id is {missing_id}")
 
+# https://adventofcode.com/2020/day/6
+def day6(input_file):
+    groups = input_file.split("\n\n")
+    num_questions = 0
+    for group in groups:
+        questions = {}
+        group = group.split("\n")
+        for individual in group:
+            for answer in individual:
+                if questions.get(answer):
+                    questions[answer] += 1
+                else:
+                    questions[answer] = 1
+        for question in questions:
+            if questions[question] == len(group):
+                num_questions += 1
+    print(f"The sum of questions is {num_questions}")
+
 
 def solver(day):
     start = time.time()
@@ -156,5 +174,3 @@ def all_days():
         solver(f"day{i+1}")
         print()
     print(f"Execution of all solutions took {round((time.time() - totaltime) * 1000, 5)} ms")
-
-all_days()

@@ -160,6 +160,40 @@ def day6(input_file):
                 num_questions += 1
     print(f"The sum of questions is {num_questions}")
 
+# https://adventofcode.com/2020/day/7
+def day7(input_file):
+    def count_bags(bag):
+        # Substract 1 from to total to not count initial bag
+        ret = 1
+        for bags in rules_dict[bag]:
+            ret += int(bags[1]) * count_bags(bags[0])
+        return ret
+
+    def traverse_rules(bag):
+        for bags in rules_dict[bag]:
+            if bags[0] == 'shiny gold':
+                return 1
+            if traverse_rules(bags[0]):
+                return 1
+        return 0
+
+    rules_dict = {}
+    rules = input_file.split("\n")
+    start_pattern = re.compile(r'(.*?) (?=bags contain)')
+    content_pattern = re.compile(r'(\d) (.*?) (?=bags?[,.])')
+    for rule in rules:
+        rule_parts = content_pattern.findall(rule)
+        bag_name = start_pattern.match(rule).groups()[0]
+        rules_dict[bag_name] = []
+        for sub_rule in rule_parts:
+            rules_dict[bag_name].append((sub_rule[1], sub_rule[0]))
+
+    number_of_valid_bags = 0
+    for i in rules_dict:
+        number_of_valid_bags += traverse_rules(i)
+
+    print(f"The sum of valid bags is {number_of_valid_bags}")
+    print(f"The sum of bags inside the shiny gold bag is " + str(count_bags("shiny gold") - 1))
 
 def solver(day):
     start = time.time()
@@ -169,8 +203,10 @@ def solver(day):
 
 def all_days():
     totaltime = time.time()
-    for i in range(5):
+    for i in range(7):
         print(f"===== DAY {i+1:2d} =====")
         solver(f"day{i+1}")
         print()
     print(f"Execution of all solutions took {round((time.time() - totaltime) * 1000, 5)} ms")
+
+solver("day7")

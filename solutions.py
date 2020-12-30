@@ -142,6 +142,7 @@ def day5(input_file):
 
     print(f"The highest id is {max_id} and your seat id is {missing_id}")
 
+
 # https://adventofcode.com/2020/day/6
 def day6(input_file):
     groups = input_file.split("\n\n")
@@ -159,6 +160,7 @@ def day6(input_file):
             if questions[question] == len(group):
                 num_questions += 1
     print(f"The sum of questions is {num_questions}")
+
 
 # https://adventofcode.com/2020/day/7
 def day7(input_file):
@@ -195,6 +197,44 @@ def day7(input_file):
     print(f"The sum of valid bags is {number_of_valid_bags}")
     print(f"The sum of bags inside the shiny gold bag is " + str(count_bags("shiny gold") - 1))
 
+
+# https://adventofcode.com/2020/day/8
+def day8(input_file):
+    original_instructions = [i.split(" ") + [False] for i in input_file.split("\n")]
+
+    def run_instruction(instructions):
+        accumulator = 0
+        pointer = 0
+        full_run = False
+        while not instructions[pointer][2]:
+            instructions[pointer][2] = True
+            if instructions[pointer][0] == "acc":
+                accumulator += int(instructions[pointer][1])
+            elif instructions[pointer][0] == "jmp":
+                pointer += int(instructions[pointer][1])
+                continue
+            elif instructions[pointer][0] == "nop":
+                pass
+            pointer += 1
+            if pointer + 1 == len(instructions):
+                full_run = True
+                break
+        return (str(accumulator), full_run)
+    # Task 1
+    print(f"The state of the accumulator before the infinite loop is " + run_instruction(original_instructions)[0])
+    # Task 2
+    for i in range(len(original_instructions)):
+        copied_instructions = [i.split(" ") + [False] for i in input_file.split("\n")]
+        if copied_instructions[i][0] == "jmp":
+            copied_instructions[i][0] = "nop"
+        elif copied_instructions[i][0] == "nop":
+            copied_instructions[i][0] = "jmp"
+        accumulator_value, run_completed = run_instruction(copied_instructions)
+        if run_completed:
+            print(f"The state of the accumulator before the faulty instruction is {accumulator_value}")
+            break
+
+
 def solver(day):
     start = time.time()
     with open(INPUT_FILES[day], "r") as file:
@@ -209,4 +249,4 @@ def all_days():
         print()
     print(f"Execution of all solutions took {round((time.time() - totaltime) * 1000, 5)} ms")
 
-solver("day7")
+solver("day8")

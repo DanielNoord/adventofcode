@@ -235,6 +235,43 @@ def day8(input_file):
             break
 
 
+# https://adventofcode.com/2020/day/9
+def day9(input_file):
+    number_input = [int(i) for i in input_file.split('\n')]
+    preamble = []
+
+    def find_xmas_number(numbers):
+        for number in numbers:
+            preamble.append(number)
+            if len(preamble) > 25:
+                i = 0
+                while i < 25:
+                    if number - preamble[i] in preamble[:25]:
+                        break
+                    i += 1
+                else:
+                    return number
+                preamble.pop(0)
+
+    def find_weakness(data, target):
+        for i in enumerate(data):
+            current_sum = [0]
+            j = i[0]
+            while current_sum[0] < target:
+                current_sum[0] += data[j]
+                current_sum.append(data[j])
+                if current_sum[0] == int(target):
+                    return max(current_sum[1:]) + min(current_sum[1:])
+                j += 1
+
+
+    solution_task1 = find_xmas_number(number_input)
+    print(f"The first incorrect number is {solution_task1}")
+    print(f"The encryption weakness is {find_weakness(number_input, solution_task1)}")
+
+
+
+
 def solver(day):
     start = time.time()
     with open(INPUT_FILES[day], "r") as file:
@@ -243,10 +280,10 @@ def solver(day):
 
 def all_days():
     totaltime = time.time()
-    for i in range(7):
+    for i in range(9):
         print(f"===== DAY {i+1:2d} =====")
         solver(f"day{i+1}")
         print()
     print(f"Execution of all solutions took {round((time.time() - totaltime) * 1000, 5)} ms")
 
-solver("day8")
+solver("day9")

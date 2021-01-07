@@ -2,6 +2,7 @@
 
 import re
 import time
+from collections import deque
 
 INPUT_FILES = dict((f"day{i+1}", f"inputs/input{i+1}.txt") for i in range(25))
 
@@ -270,7 +271,82 @@ def day9(input_file):
     print(f"The encryption weakness is {find_weakness(number_input, solution_task1)}")
 
 
+# https://adventofcode.com/2020/day/10
+def day10(input_file):
+    adapters = [0] + sorted([int(i) for i in input_file.split()])
+    jumps = [0, 0, 1]
+    for i in enumerate(adapters[:-1]):
+        jumps[adapters[i[0] + 1] - i[1] - 1] += 1
 
+    # Based on solutions.py from https://github.com/warbaque/adventofcode-2020
+    def find_paths():
+        counter = deque([(0, 1)], maxlen=3)
+        for adapter in adapters[1:]:
+            ways = sum(w for j, w in counter if adapter - j <= 3)
+            counter.append((adapter, ways))
+        return counter[2][1]
+
+    print(f"The multiple of 1 and 3 step adapters is {jumps[0] * jumps[2]}")
+    print(f"The number of arrangements is {find_paths()}")
+
+
+# https://adventofcode.com/2020/day/11
+def day11(input_file):
+    grid = input_file.split()
+
+    height = len(grid)
+    width = len(grid[0])
+
+    def neighbour(grid_to_check, x, y, i, j):
+        if (0 <= x + i < width) and (0 <= y + j < height) and (i != 0 or j != 0):
+            return grid_to_check[y + j][x + i] == '#'
+        return False
+
+    def visible(grid_to_check, x, y, i, j):
+        while True:
+            x += i
+            y += j
+            if not ((0 <= x < width) and (0 <= y < height) and (i != 0 or j != 0)):
+                break
+            if grid_to_check[y][x] == '.':
+                continue
+            return grid_to_check[y][x] == '#'
+        return False
+
+    def do_round(old_grid, check, max_neighbours):
+        new_grid = ["" for i in range(height)]
+        occupied_seats = 0
+        for line in enumerate(old_grid):
+            for place in enumerate(line[1]):
+                neighbours = 0
+                for i in [-1, 0, 1]:
+                    for j in [-1, 0, 1]:
+                        neighbours += check(old_grid, place[0], line[0], i, j)
+                if place[1] == 'L': 
+                    if neighbours == 0:
+                        new_grid[line[0]] += "#"
+                        occupied_seats += 1
+                    else:
+                        new_grid[line[0]] += "L"
+                elif place[1] == '#':
+                    if neighbours >= max_neighbours:
+                        new_grid[line[0]] += "L"
+                    else:
+                        new_grid[line[0]] += "#"
+                        occupied_seats += 1
+                elif place[1] == '.':
+                    new_grid[line[0]] += "."
+        return new_grid, occupied_seats
+
+    def run(grid, check, max_neighbours):
+        previous_grid = []
+        while previous_grid != grid:
+            previous_grid = grid
+            grid, number_of_occupied = do_round(previous_grid, check, max_neighbours)
+        return number_of_occupied
+
+    print(f"The number of occupied seats after no changes is {run(grid, neighbour, 4)}")
+    print(f"The number of occupied seats after no changes with the second rule is {run(grid, visible, 5)}")
 
 def solver(day):
     start = time.time()
@@ -286,4 +362,4 @@ def all_days():
         print()
     print(f"Execution of all solutions took {round((time.time() - totaltime) * 1000, 5)} ms")
 
-solver("day9")
+solver("day11")

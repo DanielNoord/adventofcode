@@ -318,6 +318,9 @@ def day11(input_file):
         occupied_seats = 0
         for line in enumerate(old_grid):
             for place in enumerate(line[1]):
+                if place[1] == '.':
+                    new_grid[line[0]] += "."
+                    continue
                 neighbours = 0
                 for i in [-1, 0, 1]:
                     for j in [-1, 0, 1]:
@@ -334,8 +337,6 @@ def day11(input_file):
                     else:
                         new_grid[line[0]] += "#"
                         occupied_seats += 1
-                elif place[1] == '.':
-                    new_grid[line[0]] += "."
         return new_grid, occupied_seats
 
     def run(grid, check, max_neighbours):
@@ -345,8 +346,8 @@ def day11(input_file):
             grid, number_of_occupied = do_round(previous_grid, check, max_neighbours)
         return number_of_occupied
 
-    print(f"The number of occupied seats after no changes is {run(grid, neighbour, 4)}")
-    print(f"The number of occupied seats after no changes with the second rule is {run(grid, visible, 5)}")
+    print(f"Number of occupied seats after no changes is {run(grid, neighbour, 4)}")
+    print(f"Number of occupied seats after no changes with second rule is {run(grid, visible, 5)}")
 
 def solver(day):
     start = time.time()

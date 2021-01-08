@@ -196,7 +196,7 @@ def day7(input_file):
         number_of_valid_bags += traverse_rules(i)
 
     print(f"The sum of valid bags is {number_of_valid_bags}")
-    print(f"The sum of bags inside the shiny gold bag is " + str(count_bags("shiny gold") - 1))
+    print(f"The sum of bags inside the shiny gold bag is {count_bags('shiny gold') - 1}")
 
 
 # https://adventofcode.com/2020/day/8
@@ -222,7 +222,7 @@ def day8(input_file):
                 break
         return (str(accumulator), full_run)
     # Task 1
-    print(f"The state of the accumulator before the infinite loop is " + run_instruction(original_instructions)[0])
+    print(f"The state of the accumulator before the infinite loop is {run_instruction(original_instructions)[0]}")
     # Task 2
     for i in range(len(original_instructions)):
         copied_instructions = [i.split(" ") + [False] for i in input_file.split("\n")]
@@ -291,6 +291,7 @@ def day10(input_file):
 
 
 # https://adventofcode.com/2020/day/11
+# Runs much faster with pypy, but need to remove f-strings
 def day11(input_file):
     grid = input_file.split()
 
@@ -325,7 +326,7 @@ def day11(input_file):
                 for i in [-1, 0, 1]:
                     for j in [-1, 0, 1]:
                         neighbours += check(old_grid, place[0], line[0], i, j)
-                if place[1] == 'L': 
+                if place[1] == 'L':
                     if neighbours == 0:
                         new_grid[line[0]] += "#"
                         occupied_seats += 1
@@ -357,7 +358,7 @@ def solver(day):
 
 def all_days():
     totaltime = time.time()
-    for i in range(9):
+    for i in range(11):
         print(f"===== DAY {i+1:2d} =====")
         solver(f"day{i+1}")
         print()

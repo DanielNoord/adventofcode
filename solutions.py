@@ -12,12 +12,12 @@ def day1(input_file):
     # Find pair that sum to 2020
     for item in expenses:
         if remainder := 2020 - item in expenses:
-            print(f"The product of the two items summing to 2020 is: {remainder * item}")
+            print(f"The product of two items summing to 2020 is: {remainder * item}")
             continue
         # Find three items that sum to 2020
         for item2 in expenses[expenses.index(item) + 1:]:
             if remainder := 2020 - item - item2 in expenses:
-                print(f"The product of the three items summing to 2020 is: {remainder * item * item2}")
+                print(f"The product of three items summing to 2020 is: {remainder * item * item2}")
                 break
         else:
             continue
@@ -36,7 +36,8 @@ def day2(input_file):
         letter = groups[1][0]
         if groups[2].count(letter) >= int(limits[0]) and groups[2].count(letter) <= int(limits[1]):
             other_correct_count += 1
-        if bool(groups[2][int(limits[0]) - 1] == letter) ^ bool(groups[2][int(limits[1]) - 1] == letter):
+        if bool(groups[2][int(limits[0]) - 1] == letter) ^ \
+            bool(groups[2][int(limits[1]) - 1] == letter):
             toboggan_correct_count += 1
     print(f"The number of correct passwords following other policy is: {other_correct_count}")
     print(f"The number of correct passwords following Toboggan policy is: {toboggan_correct_count}")
@@ -47,7 +48,7 @@ def day3(input_file):
     input_map = input_file.split("\n")
     input_map_width = len(input_map[0])
 
-    def check_trees(vertical, horizontal):
+    def trees(vertical, horizontal):
         pointer = [0, 0]
         trees = 0
         for _ in range(0, len(input_map) - 1, vertical):
@@ -55,11 +56,11 @@ def day3(input_file):
             pointer[1] += horizontal
             if input_map[pointer[0]][pointer[1] % input_map_width] == "#":
                 trees += 1
-        print(f"With a slope of {horizontal} right and {vertical} down you will encounter {trees} trees")
+        print(f"With a slope of {horizontal} right and {vertical} down you encounter {trees} trees")
         return trees
 
-    check_trees(1, 3)
-    print(f"Sum of all trees: {check_trees(1, 1) * check_trees(1, 3) * check_trees(1, 5) * check_trees(1, 7) * check_trees(2, 1)}")
+    trees(1, 3)
+    print("Sum of all trees: ", trees(1, 1) * trees(1, 3) * trees(1, 5) * trees(1, 7) * trees(2, 1))
 
 
 # https://adventofcode.com/2020/day/4
@@ -73,25 +74,25 @@ def day4(input_file):
 
     required_fields = {'byr', 'iyr', 'eyr', 'hgt', 'hcl', 'ecl', 'pid'}
     valid_passports = 0
-    for passport in clean_passports:
+    for passp in clean_passports:
         valid = 0
-        missing_field = required_fields - passport.keys()
+        missing_field = required_fields - passp.keys()
         if missing_field == set():
             valid += 1
-        if passport.get('byr') and 1920 <= int(passport['byr']) <= 2002:
+        if passp.get('byr') and 1920 <= int(passp['byr']) <= 2002:
             valid += 1
-        if passport.get('iyr') and 2010 <= int(passport['iyr']) <= 2020:
+        if passp.get('iyr') and 2010 <= int(passp['iyr']) <= 2020:
             valid += 1
-        if passport.get('eyr') and 2020 <= int(passport['eyr']) <= 2030:
+        if passp.get('eyr') and 2020 <= int(passp['eyr']) <= 2030:
             valid += 1
-        if passport.get('hcl') and re.compile(r'^#[\da-z]{6}$').match(passport['hcl']) is not None:
+        if passp.get('hcl') and re.compile(r'^#[\da-z]{6}$').match(passp['hcl']) is not None:
             valid += 1
-        if passport.get('ecl') and passport['ecl'] in {'amb', 'blu', 'brn', 'gry', 'grn', 'hzl', 'oth'}:
+        if passp.get('ecl') and passp['ecl'] in {'amb', 'blu', 'brn', 'gry', 'grn', 'hzl', 'oth'}:
             valid += 1
-        if passport.get('pid') and re.compile(r'^\d{9}$').match(passport['pid']) is not None:
+        if passp.get('pid') and re.compile(r'^\d{9}$').match(passp['pid']) is not None:
             valid += 1
-        if passport.get('hgt'):
-            height, unit = re.compile(r'^(\d+)(in|cm)?$').match(passport['hgt']).groups()
+        if passp.get('hgt'):
+            height, unit = re.compile(r'^(\d+)(in|cm)?$').match(passp['hgt']).groups()
             if unit == 'cm' and 150 <= int(height) <= 193:
                 valid += 1
             elif unit == 'in' and 59 <= int(height) <= 76:
@@ -222,7 +223,7 @@ def day8(input_file):
                 break
         return (str(accumulator), full_run)
     # Task 1
-    print(f"The state of the accumulator before the infinite loop is {run_instruction(original_instructions)[0]}")
+    print("The accumulator before infinite loop is at ", run_instruction(original_instructions)[0])
     # Task 2
     for i in range(len(original_instructions)):
         copied_instructions = [i.split(" ") + [False] for i in input_file.split("\n")]
@@ -232,7 +233,7 @@ def day8(input_file):
             copied_instructions[i][0] = "jmp"
         accumulator_value, run_completed = run_instruction(copied_instructions)
         if run_completed:
-            print(f"The state of the accumulator before the faulty instruction is {accumulator_value}")
+            print("The accumulator before faulty instruction loop is at ", accumulator_value)
             break
 
 
@@ -298,20 +299,20 @@ def day11(input_file):
     height = len(grid)
     width = len(grid[0])
 
-    def neighbour(grid_to_check, x, y, i, j):
-        if (0 <= x + i < width) and (0 <= y + j < height) and (i != 0 or j != 0):
-            return grid_to_check[y + j][x + i] == '#'
+    def neighbour(grid_to_check, xcoord, ycoord, i, j):
+        if (0 <= xcoord + i < width) and (0 <= ycoord + j < height) and (i != 0 or j != 0):
+            return grid_to_check[ycoord + j][xcoord + i] == '#'
         return False
 
-    def visible(grid_to_check, x, y, i, j):
+    def visible(grid_to_check, xcoord, ycoord, i, j):
         while True:
-            x += i
-            y += j
-            if not ((0 <= x < width) and (0 <= y < height) and (i != 0 or j != 0)):
+            xcoord += i
+            ycoord += j
+            if not ((0 <= xcoord < width) and (0 <= ycoord < height) and (i != 0 or j != 0)):
                 break
-            if grid_to_check[y][x] == '.':
+            if grid_to_check[ycoord][xcoord] == '.':
                 continue
-            return grid_to_check[y][x] == '#'
+            return grid_to_check[ycoord][xcoord] == '#'
         return False
 
     def do_round(old_grid, check, max_neighbours):
@@ -350,6 +351,43 @@ def day11(input_file):
     print(f"Number of occupied seats after no changes is {run(grid, neighbour, 4)}")
     print(f"Number of occupied seats after no changes with second rule is {run(grid, visible, 5)}")
 
+
+# https://adventofcode.com/2020/day/12
+def day12(input_file):
+    directs = {"N": (0, 1), "E": (1, 0), "S": (0, -1), "W": (-1, 0)}
+    heads = [(0, 1), (1, 0), (0, -1), (-1, 0)]
+
+    instructions = [(i[0], int(i[1:])) for i in input_file.split()]
+    pos = (0, 0)
+    head = 1
+
+    for direct, val in instructions:
+        if direct == "F":
+            pos = tuple(x + y for x, y in zip(pos, (val * heads[head][0], val * heads[head][1])))
+        elif direct == "R":
+            head = (head + val // 90) % 4
+        elif direct == "L":
+            head = ((head - val // 90) + 4) % 4
+        else:
+            pos = tuple(x + y for x, y in zip(pos, tuple(val * i for i in directs[direct])))
+    print(f"The Manhattan Distance after instruction is {abs(pos[0]) + abs(pos[1])}")
+
+    pos = (0, 0)
+    wayp = (10, 1)
+    for direct, val in instructions:
+        if direct == "F":
+            pos = tuple(x + y for x, y in zip(pos, (val * wayp[0], val * wayp[1])))
+        elif direct == "R":
+            for _ in range(val // 90):
+                wayp = (wayp[1], -wayp[0])
+        elif direct == "L":
+            for _ in range(val // 90):
+                wayp = (-wayp[1], wayp[0])
+        else:
+            wayp = tuple(x + y for x, y in zip(wayp, tuple(val * i for i in directs[direct])))
+    print(f"The Manhattan Distance after second instruction is {abs(pos[0]) + abs(pos[1])}")
+
+
 def solver(day):
     start = time.time()
     with open(INPUT_FILES[day], "r") as file:
@@ -358,10 +396,11 @@ def solver(day):
 
 def all_days():
     totaltime = time.time()
-    for i in range(11):
+    for i in range(12):
         print(f"===== DAY {i+1:2d} =====")
         solver(f"day{i+1}")
         print()
     print(f"Execution of all solutions took {round((time.time() - totaltime) * 1000, 5)} ms")
 
-solver("day11")
+solver("day12")
+all_days()

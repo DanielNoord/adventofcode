@@ -388,6 +388,31 @@ def day12(input_file):
     print(f"The Manhattan Distance after second instruction is {abs(pos[0]) + abs(pos[1])}")
 
 
+# https://adventofcode.com/2020/day/13
+def day13(input_file):
+    arrival, busses = input_file.split()
+    busses = busses.split(',')
+    busses = [(int(i), busses.index(i)) for i in busses if i != "x"]
+
+    times = {}
+    for bus in busses:
+        times[bus[0] - (int(arrival) % bus[0])] = bus[0]
+    min_minutes = min(times.keys())
+    print("Earliest possible bus ID times minutes waiting is ", times[min_minutes] * min_minutes)
+
+    timestamp = (0, busses[0][0])
+    def find_time(base_time, next_bus):
+        new_time = base_time[0]
+        while True:
+            new_time += base_time[1]
+            if (new_time + next_bus[1]) % next_bus[0] == 0:
+                return (new_time, base_time[1] * next_bus[0])
+
+    for bus in enumerate(busses[:-1]):
+        timestamp = find_time(timestamp, busses[bus[0] + 1])
+    print("The earliest timestamp is ", timestamp[0])
+
+
 def solver(day):
     start = time.time()
     with open(INPUT_FILES[day], "r") as file:
@@ -396,11 +421,11 @@ def solver(day):
 
 def all_days():
     totaltime = time.time()
-    for i in range(12):
+    for i in range(13):
         print(f"===== DAY {i+1:2d} =====")
         solver(f"day{i+1}")
         print()
     print(f"Execution of all solutions took {round((time.time() - totaltime) * 1000, 5)} ms")
 
-solver("day12")
-all_days()
+solver("day13")
+#all_days()

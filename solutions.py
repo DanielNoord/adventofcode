@@ -457,7 +457,24 @@ def day14(input_file):
 
 # https://adventofcode.com/2020/day/15
 def day15(input_file):
-    pass
+    def run(times):
+        starting_nums = [int(i) for i in input_file.split(',')]
+        curr_num = starting_nums[-1]
+        num_count = [0 for _ in range(times)]
+
+        for i in enumerate(starting_nums):
+            num_count[i[1]] = i[0] + 1
+
+        for i in range(len(starting_nums), times):
+            if (prev := num_count[curr_num]) == 0:
+                num_count[curr_num] = i
+                curr_num = 0
+            else:
+                num_count[curr_num] = i
+                curr_num = i - prev
+        return curr_num
+    print("The 2020th number is ", run(2020))
+    print("The 30000000th number is ", run(30000000))
 
 
 def solver(day):

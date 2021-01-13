@@ -413,6 +413,53 @@ def day13(input_file):
     print("The earliest timestamp is ", timestamp[0])
 
 
+# https://adventofcode.com/2020/day/14
+def day14(input_file):
+    code = input_file.split('\n')
+
+    def write_memory(adress, val, offset, mem):
+        if offset == 36:
+            mem[int(adress, 2)] = val
+            return
+        for bit in enumerate(adress[offset:]):
+            bit = (bit[0] + offset, bit[1])
+            if bit[1] == 'X':
+                write_memory(adress[:bit[0]] + '0' + adress[bit[0] + 1:], val, bit[0] + 1, mem)
+                write_memory(adress[:bit[0]] + '1' + adress[bit[0] + 1:], val, bit[0] + 1, mem)
+                return
+        mem[int(adress, 2)] = val
+
+    memory1 = {}
+    memory2 = {}
+    current_mask = ""
+
+    for line in code:
+        if line[1] == "a":
+            current_mask = re.match(r"mask = (.+)", line).groups()[0]
+        elif line[1] == "e":
+            adress, val = re.match(r"mem\[(\d+)\] = (\d+)", line).groups()
+            new_val = f'{int(val):#038b}'[2:]
+            new_adress = f'{int(adress):#038b}'[2:]
+            for bit_mask in enumerate(current_mask):
+                if bit_mask[1] == 'X':
+                    new_adress = new_adress[:bit_mask[0]] + "X" + new_adress[bit_mask[0] + 1:]
+                elif bit_mask[1] == '0':
+                    new_val = new_val[:bit_mask[0]] + "0" + new_val[bit_mask[0] + 1:]
+                elif bit_mask[1] == '1':
+                    new_val = new_val[:bit_mask[0]] + "1" + new_val[bit_mask[0] + 1:]
+                    new_adress = new_adress[:bit_mask[0]] + "1" + new_adress[bit_mask[0] + 1:]
+            memory1[adress] = int(new_val, 2)
+            write_memory(new_adress, int(val), 0, memory2)
+
+    print("The sum of values of all non-zero memory adresses in part1 is ", sum(memory1.values()))
+    print("The sum of values of all non-zero memory adresses in part2 is ", sum(memory2.values()))
+
+
+# https://adventofcode.com/2020/day/15
+def day15(input_file):
+    pass
+
+
 def solver(day):
     start = time.time()
     with open(INPUT_FILES[day], "r") as file:
@@ -421,11 +468,11 @@ def solver(day):
 
 def all_days():
     totaltime = time.time()
-    for i in range(13):
+    for i in range(15):
         print(f"===== DAY {i+1:2d} =====")
         solver(f"day{i+1}")
         print()
     print(f"Execution of all solutions took {round((time.time() - totaltime) * 1000, 5)} ms")
 
-solver("day13")
+solver("day15")
 #all_days()

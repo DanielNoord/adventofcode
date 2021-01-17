@@ -9,25 +9,28 @@ INPUT_FILES = dict((f"day{i+1}", f"inputs/input{i+1}.txt") for i in range(25))
 # https://adventofcode.com/2020/day/1
 def day1(input_file):
     expenses = [int(i) for i in input_file.split()]
-    # Find pair that sum to 2020
-    for item in expenses:
-        if remainder := 2020 - item in expenses:
-            print(f"The product of two items summing to 2020 is: {remainder * item}")
-            continue
-        # Find three items that sum to 2020
-        for item2 in expenses[expenses.index(item) + 1:]:
-            if remainder := 2020 - item - item2 in expenses:
-                print(f"The product of three items summing to 2020 is: {remainder * item * item2}")
-                break
-        else:
-            continue
-        break
 
+    complements = set()
+    for item in expenses:
+        if item in complements:
+            print(f"The product of two items summing to 2020 is: {(2020 - item) * item}")
+            break
+        complements.add(2020 - item)
+
+    for i, item in enumerate(expenses):
+        compls = set()
+        remainder = 2020 - item
+
+        for item2 in expenses[i + 1:]:
+            item3 = remainder - item2
+            if item2 in compls:
+                print(f"The product of three items summing to 2020 is: {item * item2 * item3}")
+                break
+            compls.add(item3)
 
 # https://adventofcode.com/2020/day/2
 def day2(input_file):
     passwords = input_file.split("\n")
-    # Check each lines
     other_correct_count = 0
     toboggan_correct_count = 0
     for line in passwords:
@@ -548,5 +551,5 @@ def all_days():
         print()
     print(f"Execution of all solutions took {round((time.time() - totaltime) * 1000, 5)} ms")
 
-solver("day17")
+solver("day1")
 #all_days()

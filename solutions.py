@@ -476,6 +476,59 @@ def day15(input_file):
     print("The 2020th number is ", run(2020))
     print("The 30000000th number is ", run(30000000))
 
+# https://adventofcode.com/2020/day/16
+def day16(input_file):
+    inputs = [i.split("\n") for i in input_file.split("\n\n")]
+
+    def create_lambda(lim1l, lim1u, lim2l, lim2u):
+        return lambda x: int(lim1l) <= x <= int(lim1u) or int(lim2l) <= x <= int(lim2u)
+
+    rules = {}
+    for rule in inputs[0]:
+        pattern = r"(.+): (.+)\-(.+) or (.+)\-(.+)"
+        name, lim1l, lim1u, lim2l, lim2u = re.match(pattern, rule).groups()
+        rules[name] = create_lambda(lim1l, lim1u, lim2l, lim2u)
+
+    def check_rules(ruleset, num):
+        for rule in ruleset.values():
+            if rule(num):
+                return True
+        return False
+
+    sum_of_incorrect = 0
+    valid_tickets = []
+    for ticket in inputs[2][1:]:
+        valid_tickets.append(ticket.split(","))
+        for number in ticket.split(","):
+            if check_rules(rules, int(number)) is True:
+                continue
+            sum_of_incorrect += int(number)
+            valid_tickets.pop()
+    print("The sum of incorrect values is", sum_of_incorrect)
+
+    def remove_possibility(poss):
+        if len(poss) > 1:
+            for rule in poss[1:]:
+                rule[1].remove(poss[0][1][0])
+            return [poss[0]] + remove_possibility(poss[1:])
+        return [poss[0]]
+
+    possibilities = [(k, [i for i in range(len(valid_tickets[0]))]) for k, _ in rules.items()]
+    for ticket in valid_tickets:
+        for pos, number in enumerate(ticket):
+            for ind, rule in enumerate(rules.values()):
+                if not rule(int(number)):
+                    possibilities[ind][1].remove(pos)
+    possibilities = sorted(possibilities, key = lambda rule: len(rule[1]))
+    final_set = remove_possibility(possibilities)
+
+    my_ticket = inputs[1][1].split(",")
+    positions_of_departures = 1
+    for rule in final_set:
+        if rule[0].startswith("departure"):
+            positions_of_departures *= int(my_ticket[rule[1][0]])
+    print("The sum of the positions of the departure fields is", positions_of_departures)
+
 
 def solver(day):
     start = time.time()
@@ -491,5 +544,5 @@ def all_days():
         print()
     print(f"Execution of all solutions took {round((time.time() - totaltime) * 1000, 5)} ms")
 
-solver("day15")
+solver("day16")
 #all_days()

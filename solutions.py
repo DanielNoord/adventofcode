@@ -529,6 +529,10 @@ def day16(input_file):
             positions_of_departures *= int(my_ticket[rule[1][0]])
     print("The sum of the positions of the departure fields is", positions_of_departures)
 
+# https://adventofcode.com/2020/day/17
+def day17(input_file):
+    print()
+
 
 def solver(day):
     start = time.time()
@@ -538,11 +542,11 @@ def solver(day):
 
 def all_days():
     totaltime = time.time()
-    for i in range(15):
+    for i in range(17):
         print(f"===== DAY {i+1:2d} =====")
         solver(f"day{i+1}")
         print()
     print(f"Execution of all solutions took {round((time.time() - totaltime) * 1000, 5)} ms")
 
-solver("day16")
+solver("day17")
 #all_days()

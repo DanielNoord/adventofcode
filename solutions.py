@@ -534,7 +534,7 @@ def day16(input_file):
 
 # https://adventofcode.com/2020/day/17
 def day17(input_file):
-    print()
+    pass
 
 
 def solver(day):

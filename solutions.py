@@ -534,8 +534,50 @@ def day16(input_file):
 
 # https://adventofcode.com/2020/day/17
 def day17(input_file):
-    print()
+    layers = [[[j for j in i]for i in input_file.split("\n")]]
+    for z, layer in enumerate(layers):
+        for y, line in enumerate(layer):
+            layers[z][y] = ["."] + line + ["."]
+        layers[z] = [['.'] * len(layers[0][0])] + layers[z]
+        layers[z].append([['.'] * len(layers[0][0])])
 
+    def check_neighbours(layers, xcoord, ycoord, zcoord):
+        count = 0
+        for delta in range(3):
+            if layers[zcoord - 1 + delta][ycoord][xcoord] == "#":
+                count += 1
+            if layers[zcoord][ycoord - 1 + delta][xcoord] == "#":
+                count += 1
+            if layers[zcoord][ycoord][xcoord - 1 + delta] == "#":
+                count += 1
+        if layers[zcoord][ycoord][xcoord] == "#":
+            count -= 1
+        return count
+
+    for turn in range(6):
+        height = len(layers[0])
+        width = len(layers[0][0])
+
+        layers = [[['.'] * width] * height] + layers + [[['.'] * width] * height]
+        new_layers = [[['.'] * (width + 2)] * (height + 2)]
+        for zcoord in range(0, 1 + turn + turn):
+            new_layers.append([[['.'] * (width + 2)]])
+            for ycoord in range(height):
+                new_layers[zcoord + 1].append([["."]])
+                for xcoord in range(width):
+                    neighbours = check_neighbours(layers, xcoord, ycoord, zcoord)
+                    if layers[zcoord][ycoord][xcoord] == "." and neighbours == 3:
+                        new_layers[zcoord + 1][ycoord + 1].append("#")
+                    elif layers[zcoord][ycoord][xcoord] == "#" and (neighbours == 2 or neighbours == 3):
+                        new_layers[zcoord + 1][ycoord + 1].append("#")
+                    else:
+                        new_layers[zcoord + 1][ycoord + 1].append(".")
+                new_layers[zcoord + 1][ycoord + 1].append([["."]])
+            new_layers.append([[['.'] * (width + 2)]])
+        new_layers.append([[['.'] * (width + 2)] * (height + 2)])
+        layers = new_layers
+        print(new_layers)
+                      
 
 def solver(day):
     start = time.time()
@@ -551,5 +593,5 @@ def all_days():
         print()
     print(f"Execution of all solutions took {round((time.time() - totaltime) * 1000, 5)} ms")
 
-solver("day1")
+solver("day17")
 #all_days()

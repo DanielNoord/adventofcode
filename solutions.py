@@ -21,12 +21,13 @@ def day1(input_file):
         compls = set()
         remainder = 2020 - item
 
-        for item2 in expenses[i + 1:]:
+        for item2 in expenses[i + 1 :]:
             item3 = remainder - item2
             if item2 in compls:
                 print(f"The product of three items summing to 2020 is: {item * item2 * item3}")
                 break
             compls.add(item3)
+
 
 # https://adventofcode.com/2020/day/2
 def day2(input_file):
@@ -39,8 +40,9 @@ def day2(input_file):
         letter = groups[1][0]
         if groups[2].count(letter) >= int(limits[0]) and groups[2].count(letter) <= int(limits[1]):
             other_correct_count += 1
-        if bool(groups[2][int(limits[0]) - 1] == letter) ^ \
-            bool(groups[2][int(limits[1]) - 1] == letter):
+        if bool(groups[2][int(limits[0]) - 1] == letter) ^ bool(
+            groups[2][int(limits[1]) - 1] == letter
+        ):
             toboggan_correct_count += 1
     print(f"The number of correct passwords following other policy is: {other_correct_count}")
     print(f"The number of correct passwords following Toboggan policy is: {toboggan_correct_count}")
@@ -63,7 +65,10 @@ def day3(input_file):
         return trees
 
     trees(1, 3)
-    print("Sum of all trees: ", trees(1, 1) * trees(1, 3) * trees(1, 5) * trees(1, 7) * trees(2, 1))
+    print(
+        "Sum of all trees: ",
+        trees(1, 1) * trees(1, 3) * trees(1, 5) * trees(1, 7) * trees(2, 1),
+    )
 
 
 # https://adventofcode.com/2020/day/4
@@ -72,36 +77,43 @@ def day4(input_file):
     passports = input_file.split("\n\n")
     clean_passports = []
     for passp in passports:
-        passport_fields = dict(pair.split(':') for pair in passp.split())
+        passport_fields = dict(pair.split(":") for pair in passp.split())
         clean_passports.append(passport_fields)
 
-    required_fields = {'byr', 'iyr', 'eyr', 'hgt', 'hcl', 'ecl', 'pid'}
+    required_fields = {"byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid"}
     valid_passports = 0
     for passp in clean_passports:
         valid = 0
         missing_field = required_fields - passp.keys()
         if missing_field == set():
             valid += 1
-        if passp.get('byr') and 1920 <= int(passp['byr']) <= 2002:
+        if passp.get("byr") and 1920 <= int(passp["byr"]) <= 2002:
             valid += 1
-        if passp.get('iyr') and 2010 <= int(passp['iyr']) <= 2020:
+        if passp.get("iyr") and 2010 <= int(passp["iyr"]) <= 2020:
             valid += 1
-        if passp.get('eyr') and 2020 <= int(passp['eyr']) <= 2030:
+        if passp.get("eyr") and 2020 <= int(passp["eyr"]) <= 2030:
             valid += 1
-        if passp.get('hcl') and re.compile(r'^#[\da-z]{6}$').match(passp['hcl']) is not None:
+        if passp.get("hcl") and re.compile(r"^#[\da-z]{6}$").match(passp["hcl"]) is not None:
             valid += 1
-        if passp.get('ecl') and passp['ecl'] in {'amb', 'blu', 'brn', 'gry', 'grn', 'hzl', 'oth'}:
+        if passp.get("ecl") and passp["ecl"] in {
+            "amb",
+            "blu",
+            "brn",
+            "gry",
+            "grn",
+            "hzl",
+            "oth",
+        }:
             valid += 1
-        if passp.get('pid') and re.compile(r'^\d{9}$').match(passp['pid']) is not None:
+        if passp.get("pid") and re.compile(r"^\d{9}$").match(passp["pid"]) is not None:
             valid += 1
-        if passp.get('hgt'):
-            height, unit = re.compile(r'^(\d+)(in|cm)?$').match(passp['hgt']).groups()
-            if unit == 'cm' and 150 <= int(height) <= 193:
+        if passp.get("hgt"):
+            height, unit = re.compile(r"^(\d+)(in|cm)?$").match(passp["hgt"]).groups()
+            if unit == "cm" and 150 <= int(height) <= 193:
                 valid += 1
-            elif unit == 'in' and 59 <= int(height) <= 76:
+            elif unit == "in" and 59 <= int(height) <= 76:
                 valid += 1
-        if valid == 8:
-            valid_passports += 1
+        valid_passports += valid // 8
 
     print(f"There are {valid_passports} valid passports")
 
@@ -114,21 +126,19 @@ def day5(input_file):
         left = 128
         row_nr = 0
         for i in row_id:
-            if i == 'B':
+            if i == "B":
                 row_nr += left // 2
             left //= 2
         return row_nr
-
 
     def find_column(column_id):
         left = 8
         column_nr = 0
         for i in column_id:
-            if i == 'R':
+            if i == "R":
                 column_nr += left // 2
             left //= 2
         return column_nr
-
 
     max_id = 0
     seat_ids = []
@@ -178,7 +188,7 @@ def day7(input_file):
 
     def traverse_rules(bag):
         for bags in rules_dict[bag]:
-            if bags[0] == 'shiny gold':
+            if bags[0] == "shiny gold":
                 return 1
             if traverse_rules(bags[0]):
                 return 1
@@ -186,8 +196,8 @@ def day7(input_file):
 
     rules_dict = {}
     rules = input_file.split("\n")
-    start_pattern = re.compile(r'(.*?) (?=bags contain)')
-    content_pattern = re.compile(r'(\d) (.*?) (?=bags?[,.])')
+    start_pattern = re.compile(r"(.*?) (?=bags contain)")
+    content_pattern = re.compile(r"(\d) (.*?) (?=bags?[,.])")
     for rule in rules:
         rule_parts = content_pattern.findall(rule)
         bag_name = start_pattern.match(rule).groups()[0]
@@ -225,8 +235,12 @@ def day8(input_file):
                 full_run = True
                 break
         return (str(accumulator), full_run)
+
     # Task 1
-    print("The accumulator before infinite loop is at ", run_instruction(original_instructions)[0])
+    print(
+        "The accumulator before infinite loop is at ",
+        run_instruction(original_instructions)[0],
+    )
     # Task 2
     for i in range(len(original_instructions)):
         copied_instructions = [i.split(" ") + [False] for i in input_file.split("\n")]
@@ -236,13 +250,16 @@ def day8(input_file):
             copied_instructions[i][0] = "jmp"
         accumulator_value, run_completed = run_instruction(copied_instructions)
         if run_completed:
-            print("The accumulator before faulty instruction loop is at ", accumulator_value)
+            print(
+                "The accumulator before faulty instruction loop is at ",
+                accumulator_value,
+            )
             break
 
 
 # https://adventofcode.com/2020/day/9
 def day9(input_file):
-    number_input = [int(i) for i in input_file.split('\n')]
+    number_input = [int(i) for i in input_file.split("\n")]
     preamble = []
 
     def find_xmas_number(numbers):
@@ -268,7 +285,6 @@ def day9(input_file):
                 if current_sum[0] == int(target):
                     return max(current_sum[1:]) + min(current_sum[1:])
                 j += 1
-
 
     solution_task1 = find_xmas_number(number_input)
     print(f"The first incorrect number is {solution_task1}")
@@ -304,7 +320,7 @@ def day11(input_file):
 
     def neighbour(grid_to_check, xcoord, ycoord, i, j):
         if (0 <= xcoord + i < width) and (0 <= ycoord + j < height) and (i != 0 or j != 0):
-            return grid_to_check[ycoord + j][xcoord + i] == '#'
+            return grid_to_check[ycoord + j][xcoord + i] == "#"
         return False
 
     def visible(grid_to_check, xcoord, ycoord, i, j):
@@ -313,9 +329,9 @@ def day11(input_file):
             ycoord += j
             if not ((0 <= xcoord < width) and (0 <= ycoord < height) and (i != 0 or j != 0)):
                 break
-            if grid_to_check[ycoord][xcoord] == '.':
+            if grid_to_check[ycoord][xcoord] == ".":
                 continue
-            return grid_to_check[ycoord][xcoord] == '#'
+            return grid_to_check[ycoord][xcoord] == "#"
         return False
 
     def do_round(old_grid, check, max_neighbours):
@@ -323,20 +339,20 @@ def day11(input_file):
         occupied_seats = 0
         for line in enumerate(old_grid):
             for place in enumerate(line[1]):
-                if place[1] == '.':
+                if place[1] == ".":
                     new_grid[line[0]] += "."
                     continue
                 neighbours = 0
                 for i in [-1, 0, 1]:
                     for j in [-1, 0, 1]:
                         neighbours += check(old_grid, place[0], line[0], i, j)
-                if place[1] == 'L':
+                if place[1] == "L":
                     if neighbours == 0:
                         new_grid[line[0]] += "#"
                         occupied_seats += 1
                     else:
                         new_grid[line[0]] += "L"
-                elif place[1] == '#':
+                elif place[1] == "#":
                     if neighbours >= max_neighbours:
                         new_grid[line[0]] += "L"
                     else:
@@ -394,16 +410,20 @@ def day12(input_file):
 # https://adventofcode.com/2020/day/13
 def day13(input_file):
     arrival, busses = input_file.split()
-    busses = busses.split(',')
+    busses = busses.split(",")
     busses = [(int(i), busses.index(i)) for i in busses if i != "x"]
 
     times = {}
     for bus in busses:
         times[bus[0] - (int(arrival) % bus[0])] = bus[0]
     min_minutes = min(times.keys())
-    print("Earliest possible bus ID times minutes waiting is ", times[min_minutes] * min_minutes)
+    print(
+        "Earliest possible bus ID times minutes waiting is ",
+        times[min_minutes] * min_minutes,
+    )
 
     timestamp = (0, busses[0][0])
+
     def find_time(base_time, next_bus):
         new_time = base_time[0]
         while True:
@@ -418,7 +438,7 @@ def day13(input_file):
 
 # https://adventofcode.com/2020/day/14
 def day14(input_file):
-    code = input_file.split('\n')
+    code = input_file.split("\n")
 
     def write_memory(adress, val, offset, mem):
         if offset == 36:
@@ -426,9 +446,9 @@ def day14(input_file):
             return
         for bit in enumerate(adress[offset:]):
             bit = (bit[0] + offset, bit[1])
-            if bit[1] == 'X':
-                write_memory(adress[:bit[0]] + '0' + adress[bit[0] + 1:], val, bit[0] + 1, mem)
-                write_memory(adress[:bit[0]] + '1' + adress[bit[0] + 1:], val, bit[0] + 1, mem)
+            if bit[1] == "X":
+                write_memory(adress[: bit[0]] + "0" + adress[bit[0] + 1 :], val, bit[0] + 1, mem)
+                write_memory(adress[: bit[0]] + "1" + adress[bit[0] + 1 :], val, bit[0] + 1, mem)
                 return
         mem[int(adress, 2)] = val
 
@@ -441,27 +461,33 @@ def day14(input_file):
             current_mask = re.match(r"mask = (.+)", line).groups()[0]
         elif line[1] == "e":
             adress, val = re.match(r"mem\[(\d+)\] = (\d+)", line).groups()
-            new_val = f'{int(val):#038b}'[2:]
-            new_adress = f'{int(adress):#038b}'[2:]
+            new_val = f"{int(val):#038b}"[2:]
+            new_adress = f"{int(adress):#038b}"[2:]
             for bit_mask in enumerate(current_mask):
-                if bit_mask[1] == 'X':
-                    new_adress = new_adress[:bit_mask[0]] + "X" + new_adress[bit_mask[0] + 1:]
-                elif bit_mask[1] == '0':
-                    new_val = new_val[:bit_mask[0]] + "0" + new_val[bit_mask[0] + 1:]
-                elif bit_mask[1] == '1':
-                    new_val = new_val[:bit_mask[0]] + "1" + new_val[bit_mask[0] + 1:]
-                    new_adress = new_adress[:bit_mask[0]] + "1" + new_adress[bit_mask[0] + 1:]
+                if bit_mask[1] == "X":
+                    new_adress = new_adress[: bit_mask[0]] + "X" + new_adress[bit_mask[0] + 1 :]
+                elif bit_mask[1] == "0":
+                    new_val = new_val[: bit_mask[0]] + "0" + new_val[bit_mask[0] + 1 :]
+                elif bit_mask[1] == "1":
+                    new_val = new_val[: bit_mask[0]] + "1" + new_val[bit_mask[0] + 1 :]
+                    new_adress = new_adress[: bit_mask[0]] + "1" + new_adress[bit_mask[0] + 1 :]
             memory1[adress] = int(new_val, 2)
             write_memory(new_adress, int(val), 0, memory2)
 
-    print("The sum of values of all non-zero memory adresses in part1 is ", sum(memory1.values()))
-    print("The sum of values of all non-zero memory adresses in part2 is ", sum(memory2.values()))
+    print(
+        "The sum of values of all non-zero memory adresses in part1 is ",
+        sum(memory1.values()),
+    )
+    print(
+        "The sum of values of all non-zero memory adresses in part2 is ",
+        sum(memory2.values()),
+    )
 
 
 # https://adventofcode.com/2020/day/15
 def day15(input_file):
     def run(times):
-        starting_nums = [int(i) for i in input_file.split(',')]
+        starting_nums = [int(i) for i in input_file.split(",")]
         curr_num = starting_nums[-1]
         num_count = [0 for _ in range(times)]
 
@@ -476,8 +502,10 @@ def day15(input_file):
                 num_count[curr_num] = i
                 curr_num = i - prev
         return curr_num
+
     print("The 2020th number is ", run(2020))
     print("The 30000000th number is ", run(30000000))
+
 
 # https://adventofcode.com/2020/day/16
 def day16(input_file):
@@ -516,13 +544,13 @@ def day16(input_file):
             return [poss[0]] + remove_possibility(poss[1:])
         return [poss[0]]
 
-    possibilities = [(k, [i for i in range(len(valid_tickets[0]))]) for k, _ in rules.items()]
+    possibilities = list((k, [i for i in range(len(valid_tickets[0]))]) for k, _ in rules.items())
     for ticket in valid_tickets:
         for pos, number in enumerate(ticket):
             for ind, rule in enumerate(rules.values()):
                 if not rule(int(number)):
                     possibilities[ind][1].remove(pos)
-    possibilities = sorted(possibilities, key = lambda rule: len(rule[1]))
+    possibilities = sorted(possibilities, key=lambda rule: len(rule[1]))
     final_set = remove_possibility(possibilities)
 
     my_ticket = inputs[1][1].split(",")
@@ -532,58 +560,75 @@ def day16(input_file):
             positions_of_departures *= int(my_ticket[rule[1][0]])
     print("The sum of the positions of the departure fields is", positions_of_departures)
 
+
 # https://adventofcode.com/2020/day/17
 def day17(input_file):
-    layers = [[[j for j in i]for i in input_file.split("\n")]]
-    for z, layer in enumerate(layers):
-        for y, line in enumerate(layer):
-            layers[z][y] = ["."] + line + ["."]
-        layers[z] = [['.'] * len(layers[0][0])] + layers[z]
-        layers[z].append([['.'] * len(layers[0][0])])
+    w_dimensions = [[[list(i) for i in input_file.split("\n")]]]
 
-    def check_neighbours(layers, xcoord, ycoord, zcoord):
-        count = 0
-        for delta in range(3):
-            if layers[zcoord - 1 + delta][ycoord][xcoord] == "#":
-                count += 1
-            if layers[zcoord][ycoord - 1 + delta][xcoord] == "#":
-                count += 1
-            if layers[zcoord][ycoord][xcoord - 1 + delta] == "#":
-                count += 1
-        if layers[zcoord][ycoord][xcoord] == "#":
-            count -= 1
-        return count
+    def find_neighbours(w_dimensions, coords):
+        result = 0
+        for w_inc in range(-1, 2):
+            new_w = coords[0] + w_inc
+            if -1 < new_w < len(w_dimensions):
+                for z_inc in range(-1, 2):
+                    new_z = coords[1] + z_inc
+                    if -1 < new_z < len(w_dimensions[0]):
+                        for y_inc in range(-1, 2):
+                            new_y = coords[2] + y_inc
+                            if -1 < new_y < len(w_dimensions[0][0]):
+                                for x_inc in range(-1, 2):
+                                    new_x = coords[3] + x_inc
+                                    if -1 < new_x < len(w_dimensions[0][0][0]):
+                                        if w_dimensions[new_w][new_z][new_y][new_x] == "#":
+                                            result += 1
+        return result
 
-    for turn in range(6):
-        height = len(layers[0])
-        width = len(layers[0][0])
+    def iteration(w_dimensions):
+        active_cubes = 0
+        new_w_dimension = []
+        for w_coord in range(-1, len(w_dimensions) + 1):
+            new_z_planes = []
+            for z_coord in range(-1, len(w_dimensions[0]) + 1):
+                new_plane = []
+                for y_coord in range(-1, len(w_dimensions[0][0]) + 1):
+                    new_row = []
+                    for x_coord in range(-1, len(w_dimensions[0][0][0]) + 1):
+                        try:
+                            if -1 in (w_coord, z_coord, y_coord, x_coord):
+                                raise IndexError
+                            own_state = w_dimensions[w_coord][z_coord][y_coord][x_coord]
+                        except IndexError:
+                            own_state = "."
+                        neigbours = find_neighbours(
+                            w_dimensions, [w_coord, z_coord, y_coord, x_coord]
+                        )
+                        if own_state == "." and neigbours == 3:
+                            new_row.append("#")
+                            active_cubes += 1
+                        elif own_state == ".":
+                            new_row.append(".")
+                        elif neigbours in (3, 4):  # Always counts itself
+                            new_row.append("#")
+                            active_cubes += 1
+                        else:
+                            new_row.append(".")
+                    new_plane.append(new_row)
+                new_z_planes.append(new_plane)
+            new_w_dimension.append(new_z_planes)
+        return new_w_dimension, active_cubes
 
-        layers = [[['.'] * width] * height] + layers + [[['.'] * width] * height]
-        new_layers = [[['.'] * (width + 2)] * (height + 2)]
-        for zcoord in range(0, 1 + turn + turn):
-            new_layers.append([[['.'] * (width + 2)]])
-            for ycoord in range(height):
-                new_layers[zcoord + 1].append([["."]])
-                for xcoord in range(width):
-                    neighbours = check_neighbours(layers, xcoord, ycoord, zcoord)
-                    if layers[zcoord][ycoord][xcoord] == "." and neighbours == 3:
-                        new_layers[zcoord + 1][ycoord + 1].append("#")
-                    elif layers[zcoord][ycoord][xcoord] == "#" and (neighbours == 2 or neighbours == 3):
-                        new_layers[zcoord + 1][ycoord + 1].append("#")
-                    else:
-                        new_layers[zcoord + 1][ycoord + 1].append(".")
-                new_layers[zcoord + 1][ycoord + 1].append([["."]])
-            new_layers.append([[['.'] * (width + 2)]])
-        new_layers.append([[['.'] * (width + 2)] * (height + 2)])
-        layers = new_layers
-        print(new_layers)
-                      
+    for _ in range(6):
+        w_dimensions, active_cubes = iteration(w_dimensions)
+
+    print(f"At the end of 6 cycles {active_cubes} remain with Hypercube")
+
 
 def solver(day):
     start = time.time()
     with open(INPUT_FILES[day], "r") as file:
         globals()[day](file.read())
     print(f"Execution of solution for {day} took {round((time.time() - start) * 1000, 5)} ms")
+
 
 def all_days():
     totaltime = time.time()
@@ -593,5 +638,7 @@ def all_days():
         print()
     print(f"Execution of all solutions took {round((time.time() - totaltime) * 1000, 5)} ms")
 
-solver("day17")
-#all_days()
+
+if __name__ == "__main__":
+    solver("day17")
+    # all_days()

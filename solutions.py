@@ -1,5 +1,6 @@
 #! /usr/bin/env python3
 
+import operator
 import re
 import time
 from collections import deque
@@ -623,6 +624,51 @@ def day17(input_file):
     print(f"At the end of 6 cycles {active_cubes} remain with Hypercube")
 
 
+# https://adventofcode.com/2020/day/18
+def day18(input_file):
+    equations = input_file.split("\n")
+    # equations = ["((2 + 4) * 9 * ((6 + 9) * (8 + 6) + 6) + 2 + 4) * 2"]
+    result_1 = 0
+    result_2 = 0
+    ops = {"+": operator.add, "*": operator.mul}
+
+    def collapse(equation, precedence):
+        replacements = re.findall(r".* ?\(+([ \d+\*]+?)\)+ ?.*?", equation)
+        for index, pattern in enumerate(replacements):
+            replacements[index] = (str(calculate(pattern, precedence)), pattern)
+        for replace_value, pattern in replacements:
+            equation = equation.replace(f"({pattern})", replace_value)
+        return equation
+
+    def calculate_precedence(equation):
+        equation = equation.split(" ")
+        while "+" in equation:
+            index = equation.index("+")
+            equation[index - 1] = str(int(equation.pop(index - 1)) + int(equation.pop(index)))
+        return equation
+
+    def calculate(equation, precedence):
+        while "(" in equation:
+            equation = collapse(equation, precedence)
+        if precedence:
+            while "+" in equation:
+                equation = calculate_precedence(equation)
+        if not isinstance(equation, list):
+            equation = equation.split(" ")
+        res = int(equation[0])
+        for index in range(1, len(equation), 2):
+            res = ops[equation[index]](res, int(equation[index + 1]))
+        return res
+
+    for equation in equations:
+        result_1 += calculate(equation, False)
+    print("Sum of all resulting values with normal precedence is", result_1)
+
+    for equation in equations:
+        result_2 += calculate(equation, True)
+    print("Sum of all resulting values with abnormal precedence is", result_2)
+
+
 def solver(day):
     start = time.time()
     with open(INPUT_FILES[day], "r") as file:
@@ -640,5 +686,5 @@ def all_days():
 
 
 if __name__ == "__main__":
-    solver("day17")
+    solver("day18")
     # all_days()

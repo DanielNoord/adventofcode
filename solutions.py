@@ -1,5 +1,4 @@
 #! /usr/bin/env python3
-
 import operator
 import re
 import time
@@ -545,7 +544,7 @@ def day16(input_file):
             return [poss[0]] + remove_possibility(poss[1:])
         return [poss[0]]
 
-    possibilities = list((k, [i for i in range(len(valid_tickets[0]))]) for k, _ in rules.items())
+    possibilities = list((k, list(range(len(valid_tickets[0])))) for k, _ in rules.items())
     for ticket in valid_tickets:
         for pos, number in enumerate(ticket):
             for ind, rule in enumerate(rules.values()):
@@ -627,7 +626,6 @@ def day17(input_file):
 # https://adventofcode.com/2020/day/18
 def day18(input_file):
     equations = input_file.split("\n")
-    # equations = ["((2 + 4) * 9 * ((6 + 9) * (8 + 6) + 6) + 2 + 4) * 2"]
     result_1 = 0
     result_2 = 0
     ops = {"+": operator.add, "*": operator.mul}
@@ -669,6 +667,73 @@ def day18(input_file):
     print("Sum of all resulting values with abnormal precedence is", result_2)
 
 
+# https://adventofcode.com/2020/day/19
+def day19(input_file):
+    # Never look at this again ...
+    rules, messages = [i.split("\n") for i in input_file.split("\n\n")]
+    result_1 = 0
+
+    def split_rules(number, rule, rules_dict):
+        if isinstance(rule, re.Pattern):
+            return rule
+        if '"' in rule:
+            pattern = re.compile(rule[1])
+            rules_dict[number] = pattern
+        elif "|" in rule:
+            sub_pattern_1, sub_pattern_2 = rule.split(" | ")
+            if number in sub_pattern_2.split(" "):
+                sub_rules = sub_pattern_1.split(" ")
+                pattern_string = ""
+                for index, sub_rule in enumerate(sub_rules):
+                    sub_rules[index] = split_rules(None, rules_dict[sub_rule], rules_dict).pattern
+                for repeat in range(1, 41):
+                    pattern_string += "".join(f"{i}{{{repeat}}}" for i in sub_rules) + "|"
+                pattern = re.compile("(" + pattern_string[:-1] + ")")
+            else:
+                sub_pattern_1 = split_rules(None, sub_pattern_1, rules_dict)
+                sub_pattern_2 = split_rules(None, sub_pattern_2, rules_dict)
+                pattern = re.compile(
+                    f"({'|'.join([sub_pattern_1.pattern, sub_pattern_2.pattern])})"
+                )
+            if number is not None:
+                rules_dict[number] = pattern
+        elif " " in rule:
+            sub_rules = rule.split(" ")
+            for index, sub_rule in enumerate(sub_rules):
+                sub_rules[index] = split_rules(sub_rule, rules_dict[sub_rule], rules_dict)
+            pattern = re.compile("".join(i.pattern for i in sub_rules))
+            if number is not None:
+                rules_dict[number] = pattern
+        else:
+            pattern = split_rules(rule, rules_dict[rule], rules_dict)
+        return pattern
+
+    rules = dict([k.split(": ") for k in rules])
+    for number, rule in rules.items():
+        split_rules(number, rule, rules)
+
+    for message in messages:
+        stripped_message = rules["0"].sub("", message)
+        if stripped_message == "":
+            result_1 += 1
+    print("Messages following rule 0 is", result_1)
+
+    # Question 2
+    rules, messages = [i.split("\n") for i in input_file.split("\n\n")]
+    result_2 = 0
+    rules = dict([k.split(": ") for k in rules])
+    rules["8"] = "42 | 42 8"
+    rules["11"] = "42 31 | 42 11 31"
+
+    for number, rule in rules.items():
+        split_rules(number, rule, rules)
+
+    for message in messages:
+        if rules["0"].fullmatch(message):
+            result_2 += 1
+    print("All correct messages with updated rules are", result_2)
+
+
 def solver(day):
     start = time.time()
     with open(INPUT_FILES[day], "r") as file:
@@ -678,7 +743,7 @@ def solver(day):
 
 def all_days():
     totaltime = time.time()
-    for i in range(17):
+    for i in range(19):
         print(f"===== DAY {i+1:2d} =====")
         solver(f"day{i+1}")
         print()
@@ -686,5 +751,5 @@ def all_days():
 
 
 if __name__ == "__main__":
-    solver("day18")
+    solver("day19")
     # all_days()

@@ -1,0 +1,31 @@
+# Global mypy options:
+[tool.mypy]
+files = "2021"
+strict = true
+
+# Global pylint options
+[tool.pylint.MASTER]
+load-plugins=[
+    "pylint.extensions.check_elif",
+    "pylint.extensions.code_style",
+    "pylint.extensions.comparetozero",
+    "pylint.extensions.docparams",
+    "pylint.extensions.docstyle",
+    "pylint.extensions.empty_comment",
+    "pylint.extensions.for_any_all",
+    "pylint.extensions.set_membership",
+    "pylint.extensions.typing"
+]
+py-version="3.8"
+
+[tool.pylint.'MESSAGES CONTROL']
+disable = [
+    "duplicate-code",
+    "missing-function-docstring",
+    "missing-raises-doc",
+    "too-many-locals",
+    "too-many-nested-blocks"
+]
+enable = [
+    "c-extension-no-member",
+]

@@ -1,4 +1,6 @@
 #! /usr/bin/env python3
+"""Solutions to year 2020"""
+
 import collections
 import operator
 import re
@@ -98,8 +100,7 @@ def day4(input_file):
     valid_passports = 0
     for passp in clean_passports:
         valid = 0
-        missing_field = required_fields - passp.keys()
-        if missing_field == set():
+        if not required_fields - passp.keys():
             valid += 1
         if passp.get("byr") and 1920 <= int(passp["byr"]) <= 2002:
             valid += 1
@@ -188,8 +189,8 @@ def day6(input_file):
                     questions[answer] += 1
                 else:
                     questions[answer] = 1
-        for question in questions:
-            if questions[question] == len(group):
+        for question in questions.values():
+            if question == len(group):
                 num_questions += 1
     print(f"The sum of questions is {num_questions}")
 
@@ -338,11 +339,7 @@ def day11(input_file):
     width = len(grid[0])
 
     def neighbour(grid_to_check, xcoord, ycoord, i, j):
-        if (
-            (0 <= xcoord + i < width)
-            and (0 <= ycoord + j < height)
-            and (i != 0 or j != 0)
-        ):
+        if (0 <= xcoord + i < width) and (0 <= ycoord + j < height) and (i or j):
             return grid_to_check[ycoord + j][xcoord + i] == "#"
         return False
 
@@ -350,9 +347,7 @@ def day11(input_file):
         while True:
             xcoord += i
             ycoord += j
-            if not (
-                (0 <= xcoord < width) and (0 <= ycoord < height) and (i != 0 or j != 0)
-            ):
+            if not ((0 <= xcoord < width) and (0 <= ycoord < height) and (i or j)):
                 break
             if grid_to_check[ycoord][xcoord] == ".":
                 continue
@@ -368,11 +363,11 @@ def day11(input_file):
                     new_grid[line[0]] += "."
                     continue
                 neighbours = 0
-                for i in [-1, 0, 1]:
-                    for j in [-1, 0, 1]:
+                for i in (-1, 0, 1):
+                    for j in (-1, 0, 1):
                         neighbours += check(old_grid, place[0], line[0], i, j)
                 if place[1] == "L":
-                    if neighbours == 0:
+                    if not neighbours:
                         new_grid[line[0]] += "#"
                         occupied_seats += 1
                     else:
@@ -463,7 +458,7 @@ def day13(input_file):
         new_time = base_time[0]
         while True:
             new_time += base_time[1]
-            if (new_time + next_bus[1]) % next_bus[0] == 0:
+            if not (new_time + next_bus[1]) % next_bus[0]:
                 return (new_time, base_time[1] * next_bus[0])
 
     for bus in enumerate(busses[:-1]):
@@ -538,7 +533,7 @@ def day15(input_file):
             num_count[i[1]] = i[0] + 1
 
         for i in range(len(starting_nums), times):
-            if (prev := num_count[curr_num]) == 0:
+            if not (prev := num_count[curr_num]):
                 num_count[curr_num] = i
                 curr_num = 0
             else:
@@ -564,10 +559,7 @@ def day16(input_file):
         rules[name] = create_lambda(lim1l, lim1u, lim2l, lim2u)
 
     def check_rules(ruleset, num):
-        for rule in ruleset.values():
-            if rule(num):
-                return True
-        return False
+        return any(rule(num) for rule in ruleset.values())
 
     sum_of_incorrect = 0
     valid_tickets = []
@@ -657,7 +649,7 @@ def day17(input_file):
                             active_cubes += 1
                         elif own_state == ".":
                             new_row.append(".")
-                        elif neigbours in (3, 4):  # Always counts itself
+                        elif neigbours in {3, 4}:  # Always counts itself
                             new_row.append("#")
                             active_cubes += 1
                         else:
@@ -771,8 +763,7 @@ def day19(input_file):
         split_rules(number, rule, rules)
 
     for message in messages:
-        stripped_message = rules["0"].sub("", message)
-        if stripped_message == "":
+        if not rules["0"].sub("", message):
             result_1 += 1
     print("Messages following rule 0 is", result_1)
 
@@ -830,7 +821,7 @@ def day20(input_file):
 
 def solver(day):
     start = time.time()
-    with open(INPUT_FILES[day], "r") as file:
+    with open(INPUT_FILES[day], "r", encoding="utf-8") as file:
         globals()[day](file.read())
     print(
         f"Execution of solution for {day} took {round((time.time() - start) * 1000, 5)} ms"

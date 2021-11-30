@@ -1,7 +1,7 @@
-![Python CI](https://github.com/DanielNoord/adventofcode/workflows/Python%20CI/badge.svg)
+[![Linters and checkers](https://github.com/DanielNoord/adventofcode/actions/workflows/main.yml/badge.svg)](https://github.com/DanielNoord/adventofcode/actions/workflows/main.yml)
 
 # Advent of Code
-My own solutions to Advent of Code
+My own solutions to [Advent of Code](https://adventofcode.com)
 
 Inspired by work and solutions found arond the web.
 

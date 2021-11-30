@@ -8,7 +8,7 @@ import time
 
 import numpy
 
-INPUT_FILES = dict((f"day{i+1}", f"inputs/input{i+1}.txt") for i in range(25))
+INPUT_FILES = dict((f"day{i+1}", f"2020/inputs/input{i+1}.txt") for i in range(25))
 
 # https://adventofcode.com/2020/day/1
 def day1(input_file):

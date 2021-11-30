@@ -7,9 +7,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Set up Python 3.8
+    - name: Set up Python 3.10
       uses: actions/setup-python@v2
       with:
-        python-version: 3.8
-    - name: GitHub Action for pylint
-      uses: cclauss/GitHub-Action-for-pylint@0.7.0
+        python-version: "3.10"
+    - name: Download dependencies
+      run: pip install pylint mypy
+    - name: Run mypy
+      run: mypy
+    - name: Run pylint
+      run: pylint 2020 2021

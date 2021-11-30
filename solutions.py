@@ -1,8 +1,10 @@
 #! /usr/bin/env python3
+import collections
 import operator
 import re
 import time
-from collections import deque
+
+import numpy
 
 INPUT_FILES = dict((f"day{i+1}", f"inputs/input{i+1}.txt") for i in range(25))
 
@@ -13,7 +15,9 @@ def day1(input_file):
     complements = set()
     for item in expenses:
         if item in complements:
-            print(f"The product of two items summing to 2020 is: {(2020 - item) * item}")
+            print(
+                f"The product of two items summing to 2020 is: {(2020 - item) * item}"
+            )
             break
         complements.add(2020 - item)
 
@@ -24,7 +28,9 @@ def day1(input_file):
         for item2 in expenses[i + 1 :]:
             item3 = remainder - item2
             if item2 in compls:
-                print(f"The product of three items summing to 2020 is: {item * item2 * item3}")
+                print(
+                    f"The product of three items summing to 2020 is: {item * item2 * item3}"
+                )
                 break
             compls.add(item3)
 
@@ -38,14 +44,20 @@ def day2(input_file):
         groups = re.split(" ", line)
         limits = groups[0].split("-")
         letter = groups[1][0]
-        if groups[2].count(letter) >= int(limits[0]) and groups[2].count(letter) <= int(limits[1]):
+        if groups[2].count(letter) >= int(limits[0]) and groups[2].count(letter) <= int(
+            limits[1]
+        ):
             other_correct_count += 1
         if bool(groups[2][int(limits[0]) - 1] == letter) ^ bool(
             groups[2][int(limits[1]) - 1] == letter
         ):
             toboggan_correct_count += 1
-    print(f"The number of correct passwords following other policy is: {other_correct_count}")
-    print(f"The number of correct passwords following Toboggan policy is: {toboggan_correct_count}")
+    print(
+        f"The number of correct passwords following other policy is: {other_correct_count}"
+    )
+    print(
+        f"The number of correct passwords following Toboggan policy is: {toboggan_correct_count}"
+    )
 
 
 # https://adventofcode.com/2020/day/3
@@ -61,7 +73,9 @@ def day3(input_file):
             pointer[1] += horizontal
             if input_map[pointer[0]][pointer[1] % input_map_width] == "#":
                 trees += 1
-        print(f"With a slope of {horizontal} right and {vertical} down you encounter {trees} trees")
+        print(
+            f"With a slope of {horizontal} right and {vertical} down you encounter {trees} trees"
+        )
         return trees
 
     trees(1, 3)
@@ -93,7 +107,10 @@ def day4(input_file):
             valid += 1
         if passp.get("eyr") and 2020 <= int(passp["eyr"]) <= 2030:
             valid += 1
-        if passp.get("hcl") and re.compile(r"^#[\da-z]{6}$").match(passp["hcl"]) is not None:
+        if (
+            passp.get("hcl")
+            and re.compile(r"^#[\da-z]{6}$").match(passp["hcl"]) is not None
+        ):
             valid += 1
         if passp.get("ecl") and passp["ecl"] in {
             "amb",
@@ -210,7 +227,9 @@ def day7(input_file):
         number_of_valid_bags += traverse_rules(i)
 
     print(f"The sum of valid bags is {number_of_valid_bags}")
-    print(f"The sum of bags inside the shiny gold bag is {count_bags('shiny gold') - 1}")
+    print(
+        f"The sum of bags inside the shiny gold bag is {count_bags('shiny gold') - 1}"
+    )
 
 
 # https://adventofcode.com/2020/day/8
@@ -300,7 +319,7 @@ def day10(input_file):
 
     # Based on solutions.py from https://github.com/warbaque/adventofcode-2020
     def find_paths():
-        counter = deque([(0, 1)], maxlen=3)
+        counter = collections.deque([(0, 1)], maxlen=3)
         for adapter in adapters[1:]:
             ways = sum(w for j, w in counter if adapter - j <= 3)
             counter.append((adapter, ways))
@@ -319,7 +338,11 @@ def day11(input_file):
     width = len(grid[0])
 
     def neighbour(grid_to_check, xcoord, ycoord, i, j):
-        if (0 <= xcoord + i < width) and (0 <= ycoord + j < height) and (i != 0 or j != 0):
+        if (
+            (0 <= xcoord + i < width)
+            and (0 <= ycoord + j < height)
+            and (i != 0 or j != 0)
+        ):
             return grid_to_check[ycoord + j][xcoord + i] == "#"
         return False
 
@@ -327,7 +350,9 @@ def day11(input_file):
         while True:
             xcoord += i
             ycoord += j
-            if not ((0 <= xcoord < width) and (0 <= ycoord < height) and (i != 0 or j != 0)):
+            if not (
+                (0 <= xcoord < width) and (0 <= ycoord < height) and (i != 0 or j != 0)
+            ):
                 break
             if grid_to_check[ycoord][xcoord] == ".":
                 continue
@@ -368,7 +393,9 @@ def day11(input_file):
         return number_of_occupied
 
     print(f"Number of occupied seats after no changes is {run(grid, neighbour, 4)}")
-    print(f"Number of occupied seats after no changes with second rule is {run(grid, visible, 5)}")
+    print(
+        f"Number of occupied seats after no changes with second rule is {run(grid, visible, 5)}"
+    )
 
 
 # https://adventofcode.com/2020/day/12
@@ -382,13 +409,17 @@ def day12(input_file):
 
     for direct, val in instructions:
         if direct == "F":
-            pos = tuple(x + y for x, y in zip(pos, (val * heads[head][0], val * heads[head][1])))
+            pos = tuple(
+                x + y for x, y in zip(pos, (val * heads[head][0], val * heads[head][1]))
+            )
         elif direct == "R":
             head = (head + val // 90) % 4
         elif direct == "L":
             head = ((head - val // 90) + 4) % 4
         else:
-            pos = tuple(x + y for x, y in zip(pos, tuple(val * i for i in directs[direct])))
+            pos = tuple(
+                x + y for x, y in zip(pos, tuple(val * i for i in directs[direct]))
+            )
     print(f"The Manhattan Distance after instruction is {abs(pos[0]) + abs(pos[1])}")
 
     pos = (0, 0)
@@ -403,8 +434,12 @@ def day12(input_file):
             for _ in range(val // 90):
                 wayp = (-wayp[1], wayp[0])
         else:
-            wayp = tuple(x + y for x, y in zip(wayp, tuple(val * i for i in directs[direct])))
-    print(f"The Manhattan Distance after second instruction is {abs(pos[0]) + abs(pos[1])}")
+            wayp = tuple(
+                x + y for x, y in zip(wayp, tuple(val * i for i in directs[direct]))
+            )
+    print(
+        f"The Manhattan Distance after second instruction is {abs(pos[0]) + abs(pos[1])}"
+    )
 
 
 # https://adventofcode.com/2020/day/13
@@ -447,8 +482,12 @@ def day14(input_file):
         for bit in enumerate(adress[offset:]):
             bit = (bit[0] + offset, bit[1])
             if bit[1] == "X":
-                write_memory(adress[: bit[0]] + "0" + adress[bit[0] + 1 :], val, bit[0] + 1, mem)
-                write_memory(adress[: bit[0]] + "1" + adress[bit[0] + 1 :], val, bit[0] + 1, mem)
+                write_memory(
+                    adress[: bit[0]] + "0" + adress[bit[0] + 1 :], val, bit[0] + 1, mem
+                )
+                write_memory(
+                    adress[: bit[0]] + "1" + adress[bit[0] + 1 :], val, bit[0] + 1, mem
+                )
                 return
         mem[int(adress, 2)] = val
 
@@ -465,12 +504,16 @@ def day14(input_file):
             new_adress = f"{int(adress):#038b}"[2:]
             for bit_mask in enumerate(current_mask):
                 if bit_mask[1] == "X":
-                    new_adress = new_adress[: bit_mask[0]] + "X" + new_adress[bit_mask[0] + 1 :]
+                    new_adress = (
+                        new_adress[: bit_mask[0]] + "X" + new_adress[bit_mask[0] + 1 :]
+                    )
                 elif bit_mask[1] == "0":
                     new_val = new_val[: bit_mask[0]] + "0" + new_val[bit_mask[0] + 1 :]
                 elif bit_mask[1] == "1":
                     new_val = new_val[: bit_mask[0]] + "1" + new_val[bit_mask[0] + 1 :]
-                    new_adress = new_adress[: bit_mask[0]] + "1" + new_adress[bit_mask[0] + 1 :]
+                    new_adress = (
+                        new_adress[: bit_mask[0]] + "1" + new_adress[bit_mask[0] + 1 :]
+                    )
             memory1[adress] = int(new_val, 2)
             write_memory(new_adress, int(val), 0, memory2)
 
@@ -544,7 +587,9 @@ def day16(input_file):
             return [poss[0]] + remove_possibility(poss[1:])
         return [poss[0]]
 
-    possibilities = list((k, list(range(len(valid_tickets[0])))) for k, _ in rules.items())
+    possibilities = list(
+        (k, list(range(len(valid_tickets[0])))) for k, _ in rules.items()
+    )
     for ticket in valid_tickets:
         for pos, number in enumerate(ticket):
             for ind, rule in enumerate(rules.values()):
@@ -558,7 +603,9 @@ def day16(input_file):
     for rule in final_set:
         if rule[0].startswith("departure"):
             positions_of_departures *= int(my_ticket[rule[1][0]])
-    print("The sum of the positions of the departure fields is", positions_of_departures)
+    print(
+        "The sum of the positions of the departure fields is", positions_of_departures
+    )
 
 
 # https://adventofcode.com/2020/day/17
@@ -579,7 +626,10 @@ def day17(input_file):
                                 for x_inc in range(-1, 2):
                                     new_x = coords[3] + x_inc
                                     if -1 < new_x < len(w_dimensions[0][0][0]):
-                                        if w_dimensions[new_w][new_z][new_y][new_x] == "#":
+                                        if (
+                                            w_dimensions[new_w][new_z][new_y][new_x]
+                                            == "#"
+                                        ):
                                             result += 1
         return result
 
@@ -642,7 +692,9 @@ def day18(input_file):
         equation = equation.split(" ")
         while "+" in equation:
             index = equation.index("+")
-            equation[index - 1] = str(int(equation.pop(index - 1)) + int(equation.pop(index)))
+            equation[index - 1] = str(
+                int(equation.pop(index - 1)) + int(equation.pop(index))
+            )
         return equation
 
     def calculate(equation, precedence):
@@ -685,9 +737,13 @@ def day19(input_file):
                 sub_rules = sub_pattern_1.split(" ")
                 pattern_string = ""
                 for index, sub_rule in enumerate(sub_rules):
-                    sub_rules[index] = split_rules(None, rules_dict[sub_rule], rules_dict).pattern
+                    sub_rules[index] = split_rules(
+                        None, rules_dict[sub_rule], rules_dict
+                    ).pattern
                 for repeat in range(1, 41):
-                    pattern_string += "".join(f"{i}{{{repeat}}}" for i in sub_rules) + "|"
+                    pattern_string += (
+                        "".join(f"{i}{{{repeat}}}" for i in sub_rules) + "|"
+                    )
                 pattern = re.compile("(" + pattern_string[:-1] + ")")
             else:
                 sub_pattern_1 = split_rules(None, sub_pattern_1, rules_dict)
@@ -700,7 +756,9 @@ def day19(input_file):
         elif " " in rule:
             sub_rules = rule.split(" ")
             for index, sub_rule in enumerate(sub_rules):
-                sub_rules[index] = split_rules(sub_rule, rules_dict[sub_rule], rules_dict)
+                sub_rules[index] = split_rules(
+                    sub_rule, rules_dict[sub_rule], rules_dict
+                )
             pattern = re.compile("".join(i.pattern for i in sub_rules))
             if number is not None:
                 rules_dict[number] = pattern
@@ -734,22 +792,62 @@ def day19(input_file):
     print("All correct messages with updated rules are", result_2)
 
 
+# https://adventofcode.com/2020/day/20
+# UNFINISHED
+def day20(input_file):
+    images = {j[5:]: k for j, k in (i.split(":\n") for i in input_file.split("\n\n"))}
+    sides = []
+    for key, image in images.items():
+        images[key] = image.split("\n")
+        sides += [
+            (images[key][0], key),
+            (images[key][-1], key),
+            ("".join(i[0] for i in images[key]), key),
+            ("".join(i[-1] for i in images[key]), key),
+        ]
+    uniques = set(
+        i[0]
+        for i in collections.Counter(i[0] for i in sides).most_common()
+        if i[1] == 1
+    )
+    sides = [i for i in sides if i[0] in uniques]
+    uniques2 = []
+    for side in sides:
+        if side[0][::-1] not in uniques:
+            uniques2.append(side)
+    corners = collections.Counter(i[1] for i in uniques2).most_common(4)
+    product_of_corners = numpy.prod([int(i[0]) for i in corners])
+    print("The product of all four corners is", product_of_corners)
+
+    sides_dict = dict(sides)
+    final_image = [[] for _ in range(int(numpy.sqrt(len(images))))]
+    final_image[0].append(images[corners[0][0]])
+    for i in range(1, 12):
+        final_image[i].append(1)
+
+    print("The degree of roughness is", product_of_corners)
+
+
 def solver(day):
     start = time.time()
     with open(INPUT_FILES[day], "r") as file:
         globals()[day](file.read())
-    print(f"Execution of solution for {day} took {round((time.time() - start) * 1000, 5)} ms")
+    print(
+        f"Execution of solution for {day} took {round((time.time() - start) * 1000, 5)} ms"
+    )
 
 
 def all_days():
     totaltime = time.time()
-    for i in range(19):
+    for i in range(20):
         print(f"===== DAY {i+1:2d} =====")
         solver(f"day{i+1}")
         print()
-    print(f"Execution of all solutions took {round((time.time() - totaltime) * 1000, 5)} ms")
+    print(
+        f"Execution of all solutions took {round((time.time() - totaltime) * 1000, 5)} ms"
+    )
 
 
 if __name__ == "__main__":
-    solver("day19")
+    solver("day20")
     # all_days()

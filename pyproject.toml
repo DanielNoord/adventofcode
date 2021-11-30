@@ -26,6 +26,3 @@ disable = [
     "too-many-locals",
     "too-many-nested-blocks"
 ]
-enable = [
-    "c-extension-no-member",
-]

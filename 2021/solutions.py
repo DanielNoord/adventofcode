@@ -2,6 +2,7 @@
 """Solutions to year 2021"""
 
 import time
+from collections import Counter
 
 INPUT_FILES = dict((f"day{i+1}", f"2021/inputs/input{i+1}.txt") for i in range(25))
 
@@ -59,6 +60,44 @@ def day2(input_file: str) -> None:
 
 # https://adventofcode.com/2021/day/3
 def day3(input_file: str) -> None:
+    numbers = input_file.strip().split("\n")
+
+    def get_bit(
+        numbers: list[str], index: int, middle: float, most_common: bool
+    ) -> str:
+        """Get the most or least common bit for a given index"""
+        if sum(number[index] == "1" for number in numbers) >= middle:
+            return "1" if most_common else "0"
+        return "0" if most_common else "1"
+
+    most_common_bits = ""
+    middle = len(numbers) // 2
+    for index in range(len(numbers[0])):
+        most_common_bits += get_bit(numbers, index, middle, True)
+    gamma = int("".join(most_common_bits), 2)
+    epsilon = int("".join("0" if i == "1" else "1" for i in most_common_bits), 2)
+    print("Power consumption is:", gamma * epsilon)
+    assert gamma * epsilon == 3309596
+
+    oxy_numbers = numbers
+    bit_pattern, index = "", 0
+    while len(oxy_numbers) > 1:
+        bit_pattern += get_bit(oxy_numbers, index, len(oxy_numbers) / 2, True)
+        oxy_numbers = [i for i in oxy_numbers if i.startswith(bit_pattern)]
+        index += 1
+
+    co2_numbers = numbers
+    bit_pattern, index = "", 0
+    while len(co2_numbers) > 1:
+        bit_pattern += get_bit(co2_numbers, index, len(co2_numbers) / 2, False)
+        co2_numbers = [i for i in co2_numbers if i.startswith(bit_pattern)]
+        index += 1
+    print("Life support rating is:", int(oxy_numbers[0], 2) * int(co2_numbers[0], 2))
+    assert int(oxy_numbers[0], 2) * int(co2_numbers[0], 2) == 2981085
+
+
+# https://adventofcode.com/2021/day/4
+def day4(input_file: str) -> None:
     pass
 
 
@@ -75,7 +114,7 @@ def solver(day: str) -> None:
 def all_days() -> None:
     """Run all days at once"""
     totaltime = time.time()
-    for i in range(2):
+    for i in range(3):
         print(f"===== DAY {i+1:2d} =====")
         solver(f"day{i+1}")
         print()
@@ -85,5 +124,5 @@ def all_days() -> None:
 
 
 if __name__ == "__main__":
-    solver("day3")
+    solver("day4")
     # all_days()

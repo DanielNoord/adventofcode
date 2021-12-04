@@ -2,7 +2,7 @@
 """Solutions to year 2021"""
 
 import time
-from collections import Counter
+from typing import Optional
 
 INPUT_FILES = dict((f"day{i+1}", f"2021/inputs/input{i+1}.txt") for i in range(25))
 
@@ -29,7 +29,7 @@ def day1(input_file: str) -> None:
 
 # https://adventofcode.com/2021/day/2
 def day2(input_file: str) -> None:
-    lines = [i.split(" ") for i in input_file.strip().split("\n")]
+    lines = [i.split(" ") for i in input_file.split("\n")]
     coords = (0, 0)
     actions = {"forward": (1, 0), "up": (0, -1), "down": (0, 1)}
     for move in lines:
@@ -49,10 +49,11 @@ def day2(input_file: str) -> None:
     }
     for move in lines:
         action_aim = actions_aim[move[0]]
+        force = int(move[1])
         coords_aim = (
-            coords_aim[0] + action_aim[0] * int(move[1]),
-            coords_aim[1] + action_aim[1](coords_aim) * int(move[1]),  # type: ignore[no-untyped-call]
-            coords_aim[2] + action_aim[2] * int(move[1]),
+            coords_aim[0] + action_aim[0] * force,
+            coords_aim[1] + action_aim[1](coords_aim) * force,  # type: ignore[no-untyped-call]
+            coords_aim[2] + action_aim[2] * force,
         )
     print("Multiplying the final coords gives:", coords_aim[0] * coords_aim[1])
     assert coords_aim[0] * coords_aim[1] == 1856459736
@@ -60,7 +61,7 @@ def day2(input_file: str) -> None:
 
 # https://adventofcode.com/2021/day/3
 def day3(input_file: str) -> None:
-    numbers = input_file.strip().split("\n")
+    numbers = input_file.split("\n")
 
     def get_bit(
         numbers: list[str], index: int, middle: float, most_common: bool
@@ -98,6 +99,82 @@ def day3(input_file: str) -> None:
 
 # https://adventofcode.com/2021/day/4
 def day4(input_file: str) -> None:
+    inputs = input_file.split("\n\n")
+    numbers = [int(i) for i in inputs[0].split(",")]
+
+    def make_card(card: str) -> list[list[Optional[int]]]:
+        """Creates a bingo card"""
+        new_card: list[list[Optional[int]]] = []
+        rows = card.split("\n")
+        for row in rows:
+            new_row: list[Optional[int]] = []
+            for i in range(5):
+                new_row.append(int(row[i * 3 : i * 3 + 2]))
+            new_card.append(new_row)
+        return new_card
+
+    cards = [make_card(i) for i in inputs[1:]]
+
+    def check_card_for_number(
+        card: list[list[Optional[int]]], number: int
+    ) -> list[list[Optional[int]]]:
+        """Check card for occurence of number"""
+        for index, row in enumerate(card):
+            for lower_index, num in enumerate(row):
+                if num == number:
+                    card[index][lower_index] = None
+        return card
+
+    def check_card_for_bingo(card: list[list[Optional[int]]]) -> bool:
+        """Check a card for potential bingo"""
+        # pylint: disable=consider-using-any-or-all
+        for row in card:
+            if all(i is None for i in row):
+                return True
+        for index in range(len(card[0])):
+            if all(i[index] is None for i in card):
+                return True
+        return False
+
+    def iterate_over_numbers(
+        numbers: list[int], cards: list[list[list[Optional[int]]]]
+    ) -> int:
+        """Iterate over all numbers and get the bingo + score"""
+        for num in numbers:
+            cards = [check_card_for_number(i, num) for i in cards]
+            for card in cards:
+                if check_card_for_bingo(card):
+                    remaining = sum(sum(i for i in row if i) for row in card)
+                    return num * remaining
+        return 0
+
+    answer_one = iterate_over_numbers(numbers, cards)
+    print("The sum of remaining numbers times last number is:", answer_one)
+    assert answer_one == 89001
+
+    def iterate_over_numbers_with_removal(
+        numbers: list[int], cards: list[list[list[Optional[int]]]]
+    ) -> int:
+        """Iterate over the numbers but remove all winning cards until one is left"""
+        for num in numbers:
+            cards = [check_card_for_number(i, num) for i in cards]
+            if len(cards) == 1:
+                if check_card_for_bingo(cards[0]):
+                    return num * sum(sum(i for i in row if i) for row in cards[0])
+            else:
+                cards = [card for card in cards if not check_card_for_bingo(card)]
+        return 0
+
+    answer_two = iterate_over_numbers_with_removal(numbers, cards)
+    print(
+        "The sum of remaning numbers times last number of last winning card is:",
+        answer_two,
+    )
+    assert answer_two == 7296
+
+
+# https://adventofcode.com/2021/day/5
+def day5(input_file: str) -> None:
     pass
 
 
@@ -105,7 +182,7 @@ def solver(day: str) -> None:
     """Solve one exercise"""
     start = time.time()
     with open(INPUT_FILES[day], "r", encoding="utf-8") as file:
-        globals()[day](file.read())
+        globals()[day](file.read().strip())
     print(
         f"Execution of solution for {day} took {round((time.time() - start) * 1000, 5)} ms"
     )
@@ -114,7 +191,7 @@ def solver(day: str) -> None:
 def all_days() -> None:
     """Run all days at once"""
     totaltime = time.time()
-    for i in range(3):
+    for i in range(4):
         print(f"===== DAY {i+1:2d} =====")
         solver(f"day{i+1}")
         print()
@@ -124,5 +201,5 @@ def all_days() -> None:
 
 
 if __name__ == "__main__":
-    solver("day4")
+    solver("day5")
     # all_days()

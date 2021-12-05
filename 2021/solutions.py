@@ -175,6 +175,48 @@ def day4(input_file: str) -> None:
 
 # https://adventofcode.com/2021/day/5
 def day5(input_file: str) -> None:
+    lines = []
+    for string in input_file.split("\n"):
+        new_coords = []
+        for coords in string.split(" -> "):
+            new_coords.append([int(i) for i in coords.split(",")])
+        lines.append(new_coords)
+
+    map_one = [[0 for _ in range(1000)] for __ in range(1000)]
+    map_two = [[0 for _ in range(1000)] for __ in range(1000)]
+
+    for line in lines:
+        x1, y1 = line[0][0], line[0][1]
+        x2, y2 = line[1][0], line[1][1]
+        x_step, y_step = 1, 1
+        if y1 > y2:
+            y_step = -1
+        if x1 > x2:
+            x_step = -1
+        if x1 == x2:
+            for index in range(y1, y2 + y_step, y_step):
+                map_one[index][x1] += 1
+                map_two[index][x1] += 1
+        elif y1 == y2:
+            for index in range(x1, x2 + x_step, x_step):
+                map_one[y1][index] += 1
+                map_two[y1][index] += 1
+        else:
+            for coords in zip(
+                range(x1, x2 + x_step, x_step), range(y1, y2 + y_step, y_step)
+            ):
+                map_two[coords[1]][coords[0]] += 1
+    overlap = sum(sum(i > 1 for i in row) for row in map_one)
+    print("The amount of points with overlap is:", overlap)
+    assert overlap == 5835
+
+    overlap_two = sum(sum(i > 1 for i in row) for row in map_two)
+    print("The amount of overlapping points with diagonal clouds is:", overlap_two)
+    assert overlap_two == 17013
+
+
+# https://adventofcode.com/2021/day/6
+def day6(input_file: str) -> None:
     pass
 
 
@@ -191,7 +233,7 @@ def solver(day: str) -> None:
 def all_days() -> None:
     """Run all days at once"""
     totaltime = time.time()
-    for i in range(4):
+    for i in range(5):
         print(f"===== DAY {i+1:2d} =====")
         solver(f"day{i+1}")
         print()
@@ -201,5 +243,5 @@ def all_days() -> None:
 
 
 if __name__ == "__main__":
-    solver("day5")
+    solver("day6")
     # all_days()

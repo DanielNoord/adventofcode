@@ -179,14 +179,15 @@ def day5(input_file: str) -> None:
     lines = []
     for string in input_file.split("\n"):
         new_coords = []
-        for coords in string.split(" -> "):
-            new_coords.append([int(i) for i in coords.split(",")])
+        for coords_str in string.split(" -> "):
+            new_coords.append([int(i) for i in coords_str.split(",")])
         lines.append(new_coords)
 
     map_one = [[0 for _ in range(1000)] for __ in range(1000)]
     map_two = [[0 for _ in range(1000)] for __ in range(1000)]
 
     for line in lines:
+        # pylint: disable=invalid-name
         x1, y1 = line[0][0], line[0][1]
         x2, y2 = line[1][0], line[1][1]
         x_step, y_step = 1, 1

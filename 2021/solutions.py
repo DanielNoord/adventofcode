@@ -3,6 +3,7 @@
 
 import time
 from typing import Optional
+from collections import Counter
 
 INPUT_FILES = dict((f"day{i+1}", f"2021/inputs/input{i+1}.txt") for i in range(25))
 
@@ -217,6 +218,39 @@ def day5(input_file: str) -> None:
 
 # https://adventofcode.com/2021/day/6
 def day6(input_file: str) -> None:
+    fish: dict[int, int] | Counter[int] = Counter(int(i) for i in input_file.split(","))
+
+    def fish_day(fish: dict[int, int] | Counter[int]) -> dict[int, int]:
+        new_fish = {}
+        for fish_type, amount in fish.items():
+            if not fish_type:
+                new_fish[8] = amount
+                if 6 in new_fish:
+                    new_fish[6] += amount
+                else:
+                    new_fish[6] = amount
+            elif fish_type == 7:
+                if 6 in new_fish:
+                    new_fish[6] += amount
+                else:
+                    new_fish[6] = amount
+            else:
+                new_fish[fish_type - 1] = amount
+        return new_fish
+
+    for _ in range(80):
+        fish = fish_day(fish)
+    print("After 80 days the amount of fish is:", sum(fish.values()))
+    assert sum(fish.values()) == 390011
+
+    for _ in range(256 - 80):
+        fish = fish_day(fish)
+    print("After 256 days the amount of fish is:", sum(fish.values()))
+    assert sum(fish.values()) == 1746710169834
+
+
+# https://adventofcode.com/2021/day/7
+def day7(input_file: str) -> None:
     pass
 
 
@@ -233,7 +267,7 @@ def solver(day: str) -> None:
 def all_days() -> None:
     """Run all days at once"""
     totaltime = time.time()
-    for i in range(5):
+    for i in range(6):
         print(f"===== DAY {i+1:2d} =====")
         solver(f"day{i+1}")
         print()
@@ -243,5 +277,5 @@ def all_days() -> None:
 
 
 if __name__ == "__main__":
-    solver("day6")
+    solver("day7")
     # all_days()

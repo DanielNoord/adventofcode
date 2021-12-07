@@ -2,7 +2,7 @@
 """Solutions to year 2021"""
 
 import time
-from typing import Optional
+from typing import Callable, Optional
 from collections import Counter
 
 INPUT_FILES = dict((f"day{i+1}", f"2021/inputs/input{i+1}.txt") for i in range(25))
@@ -221,6 +221,7 @@ def day6(input_file: str) -> None:
     fish: dict[int, int] | Counter[int] = Counter(int(i) for i in input_file.split(","))
 
     def fish_day(fish: dict[int, int] | Counter[int]) -> dict[int, int]:
+        """Compute a day of fish growth"""
         new_fish = {}
         for fish_type, amount in fish.items():
             if not fish_type:
@@ -251,7 +252,39 @@ def day6(input_file: str) -> None:
 
 # https://adventofcode.com/2021/day/7
 def day7(input_file: str) -> None:
-    pass
+    positions = sorted(int(i) for i in input_file.split(","))
+
+    def find_least_distance(pos: list[int]) -> float:
+        """Find position with least use of fuel"""
+        last_fuel = float("inf")
+        for position in range(pos[-1]):
+            if (fuel := sum(abs(i - position) for i in pos)) > last_fuel:
+                break
+            last_fuel = fuel
+        return last_fuel
+
+    fuel_use = int(find_least_distance(positions))
+    print("The fuel used to go to the optimal position is:", fuel_use)
+    assert fuel_use == 355989
+
+    def find_least_distance_costly(pos: list[int]) -> float:
+        """Find position with least use of fuel with costly moves"""
+        last_fuel = float("inf")
+        sum_of_integers: Callable[[int], float] = lambda x: (x * (x + 1)) / 2
+        for position in range(pos[-1]):
+            if (
+                fuel := sum(sum_of_integers(abs(i - position)) for i in pos)
+            ) > last_fuel:
+                break
+            last_fuel = fuel
+        return last_fuel
+
+    costly_fuel_use = int(find_least_distance_costly(positions))
+    print(
+        "The fuel is used to go the optimal position with costly movement is:",
+        costly_fuel_use,
+    )
+    assert costly_fuel_use == 102245489
 
 
 def solver(day: str) -> None:

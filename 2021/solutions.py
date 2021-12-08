@@ -288,6 +288,68 @@ def day7(input_file: str) -> None:
     assert costly_fuel_use == 102245489
 
 
+# https://adventofcode.com/2021/day/8
+def day8(input_file: str) -> None:
+    displays = [i.split(" | ") for i in input_file.split("\n")]
+
+    count = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0, 0: 0}
+    total = 0
+
+    for numbers, output in displays:
+        nums = sorted([set(i) for i in numbers.split(" ")], key=lambda x: len(x))
+        num_mapping: dict[int, set[str]] = {
+            1: nums[0],
+            2: set(),
+            3: set(),
+            4: nums[2],
+            5: set(),
+            6: set(),
+            7: nums[1],
+            8: nums[9],
+            9: set(),
+            0: set(),
+        }
+
+        # Find 0, 6, 9
+        for i in (nums[6], nums[7], nums[8]):
+            if len(i - num_mapping[4]) == 2:
+                num_mapping[9] = i
+                letter_e = nums[9] - i
+            elif len(i - num_mapping[1]) == 4:
+                num_mapping[0] = i
+            else:
+                num_mapping[6] = i
+
+        # Find 2, 3, 5
+        for i in (nums[3], nums[4], nums[5]):
+            if len(i - num_mapping[1]) == 3:
+                num_mapping[3] = i
+            elif next(iter(letter_e)) in i:
+                num_mapping[2] = i
+            else:
+                num_mapping[5] = i
+
+        # Iterate over display numbers
+        sub_total = ""
+        for output_number in output.split(" "):
+            for key, num_set in num_mapping.items():
+                if set(output_number) == num_set:
+                    count[key] += 1
+                    sub_total += str(key)
+        total += int(sub_total)
+
+    print("The numbers 1, 4, 7 and 8 occur:", count[1] + count[4] + count[7] + count[8])
+    assert count[1] + count[4] + count[7] + count[8] == 534
+
+    print("The total count of numbers is:", total)
+    assert total == 1070188
+
+
+# https://adventofcode.com/2021/day/9
+def day9(input_file: str) -> None:
+    pass
+
+
 def solver(day: str) -> None:
     """Solve one exercise"""
     start = time.time()
@@ -301,7 +363,7 @@ def solver(day: str) -> None:
 def all_days() -> None:
     """Run all days at once"""
     totaltime = time.time()
-    for i in range(6):
+    for i in range(8):
         print(f"===== DAY {i+1:2d} =====")
         solver(f"day{i+1}")
         print()
@@ -311,5 +373,5 @@ def all_days() -> None:
 
 
 if __name__ == "__main__":
-    solver("day7")
+    solver("day8")
     # all_days()

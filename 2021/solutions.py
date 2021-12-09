@@ -1,6 +1,7 @@
 #! /usr/bin/env python3
 """Solutions to year 2021"""
 
+import math
 import time
 from typing import Callable, Optional
 from collections import Counter
@@ -347,7 +348,61 @@ def day8(input_file: str) -> None:
 
 # https://adventofcode.com/2021/day/9
 def day9(input_file: str) -> None:
-    pass
+    height_map = [[int(i) for i in j] for j in input_file.split("\n")]
+    y_len = len(height_map) - 1
+    x_len = len(height_map[0]) - 1
+    positions: dict[tuple[int, int], int] = {}
+
+    def iterate_x_row(x_coord: int, y_coord: int, position: int) -> bool:
+        """Iterate over all adjecent positions of a single position to find low point"""
+        # pylint: disable=undefined-loop-variable
+        if x_coord > 0 and row[x_coord - 1] <= position:
+            return False
+        if x_coord < x_len and row[x_coord + 1] <= position:
+            return False
+        if y_coord > 0 and height_map[y_coord - 1][x_coord] <= position:
+            return False
+        if y_coord < y_len and height_map[y_coord + 1][x_coord] <= position:
+            return False
+        return True
+
+    for y_coord, row in enumerate(height_map):
+        for x_coord, position in enumerate(row):
+            if iterate_x_row(x_coord, y_coord, position):
+                positions[(y_coord, x_coord)] = position
+    print("Sum of all risk levels is:", sum(positions.values()) + len(positions))
+    assert sum(positions.values()) + len(positions) == 506
+
+    def iterate_basin(
+        x_coord: int,
+        y_coord: int,
+        depth: int,
+        visited: set[tuple[int, int]],
+    ) -> int:
+        """Iterate over adjecent positions to find basin"""
+        size = 1
+        visited.add((x_coord, y_coord))
+        if x_coord > 0 and (x_coord - 1, y_coord) not in visited:
+            if (pos := height_map[y_coord][x_coord - 1]) > depth and pos != 9:
+                size += iterate_basin(x_coord - 1, y_coord, pos, visited)
+        if x_coord < x_len and (x_coord + 1, y_coord) not in visited:
+            if (pos := height_map[y_coord][x_coord + 1]) > depth and pos != 9:
+                size += iterate_basin(x_coord + 1, y_coord, pos, visited)
+        if y_coord > 0 and (x_coord, y_coord - 1) not in visited:
+            if (pos := height_map[y_coord - 1][x_coord]) > depth and pos != 9:
+                size += iterate_basin(x_coord, y_coord - 1, pos, visited)
+        if y_coord < y_len and (x_coord, y_coord + 1) not in visited:
+            if (pos := height_map[y_coord + 1][x_coord]) > depth and pos != 9:
+                size += iterate_basin(x_coord, y_coord + 1, pos, visited)
+        return size
+
+    basin_sizes: dict[tuple[int, int], int] = {}
+    for low_point, depth in positions.items():
+        basin_sizes[low_point] = iterate_basin(low_point[1], low_point[0], depth, set())
+    product_largest_basins = math.prod(sorted(basin_sizes.values())[-3:])
+
+    print("The product of the largest basins is:", product_largest_basins)
+    assert product_largest_basins == 931200
 
 
 def solver(day: str) -> None:
@@ -373,5 +428,5 @@ def all_days() -> None:
 
 
 if __name__ == "__main__":
-    solver("day8")
+    solver("day9")
     # all_days()

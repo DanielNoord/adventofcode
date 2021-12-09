@@ -18,7 +18,7 @@ load-plugins=[
     "pylint.extensions.typing"
 ]
 py-version="3.8"
-
+extension-pkg-allow-list="math"
 [tool.pylint.'MESSAGES CONTROL']
 disable = [
     "duplicate-code",

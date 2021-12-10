@@ -407,6 +407,52 @@ def day9(input_file: str) -> None:
     assert product_largest_basins == 931200
 
 
+# https://adventofcode.com/2021/day/10
+def day10(input_file: str) -> None:
+    lines = input_file.split("\n")
+    corruption_score = 0
+    incomplete_score: list[int] = []
+
+    openers = {"(": ")", "{": "}", "[": "]", "<": ">"}
+    cor_illegals = {")": 3, "]": 57, "}": 1197, ">": 25137}
+    inc_illegals = {")": 1, "]": 2, "}": 3, ">": 4}
+
+    def check_line(line: str) -> tuple[int, list[str]]:
+        """Checks a line for corruption and incompleteness"""
+        delimiters: list[str] = []
+        for char in line:
+            if char in openers:
+                delimiters.append(char)
+            else:
+                if char != openers[delimiters[-1]]:
+                    return cor_illegals[char], delimiters
+                delimiters.pop()
+        return 0, delimiters
+
+    for line in lines:
+        line_info = check_line(line)
+        if line_info[0]:
+            corruption_score += line_info[0]
+        elif line_info[1]:
+            score = 0
+            for unclosed in line_info[1][::-1]:
+                score *= 5
+                score += inc_illegals[openers[unclosed]]
+            incomplete_score.append(score)
+
+    print("The corruption score is:", corruption_score)
+    assert corruption_score == 387363
+
+    middle_incomplete = sorted(incomplete_score)[len(incomplete_score) // 2]
+    print("The middle incomplete score is:", middle_incomplete)
+    assert middle_incomplete == 4330777059
+
+
+# https://adventofcode.com/2021/day/11
+def day11(input_file: str) -> None:
+    pass
+
+
 def solver(day: str) -> None:
     """Solve one exercise."""
     start = time.time()
@@ -421,7 +467,7 @@ def solver(day: str) -> None:
 def all_days() -> None:
     """Run all days at once."""
     totaltime = time.time()
-    for i in range(8):
+    for i in range(10):
         print(f"===== DAY {i+1:2d} =====")
         solver(f"day{i+1}")
         print()
@@ -432,5 +478,5 @@ def all_days() -> None:
 
 
 if __name__ == "__main__":
-    solver("day9")
+    solver("day11")
     # all_days()

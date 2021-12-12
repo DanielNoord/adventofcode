@@ -1,6 +1,7 @@
 #! /usr/bin/env python3
 """Solutions to year 2021."""
 
+import itertools
 import math
 import time
 from collections import Counter
@@ -450,6 +451,82 @@ def day10(input_file: str) -> None:
 
 # https://adventofcode.com/2021/day/11
 def day11(input_file: str) -> None:
+    octopuses = [[int(i) for i in j] for j in input_file.split("\n")]
+    y_len = len(octopuses) - 1
+    x_len = len(octopuses[0]) - 1
+
+    def raise_by_one(octo: list[list[int]]) -> list[list[int]]:
+        """Raise all octopuses energy levels by one"""
+        return [[i + 1 for i in j] for j in octo]
+
+    def reset_to_zero(octo: list[list[int]]) -> tuple[list[list[int]], int]:
+        """Resets all octopuses to zero and counts flashes"""
+        flashes = 0
+        for y_index, row_of_octos in enumerate(octo):
+            for x_index, octopus in enumerate(row_of_octos):
+                if octopus < 0:
+                    octo[y_index][x_index] = 0
+                    flashes += 1
+        return octo, flashes
+
+    def increase_neighbours(
+        octo: list[list[int]], y_index: int, x_index: int
+    ) -> list[list[int]]:
+        """Increase energy levels of octopuses neighbouring a flashing one"""
+        y_coords, x_coords = [0], [0]
+        if y_index > 0:
+            y_coords.append(-1)
+        if y_index < y_len:
+            y_coords.append(1)
+        if x_index > 0:
+            x_coords.append(-1)
+        if x_index < x_len:
+            x_coords.append(1)
+        coords = list(itertools.product(y_coords, x_coords))
+
+        for coord in coords:
+            octo[y_index + coord[0]][x_index + coord[1]] += 1
+
+        return octo
+
+    def check_energy_levels(octo: list[list[int]]) -> list[list[int]]:
+        """Checks energy levels of all octopuses and sees if one should flash"""
+        for y_index, row_of_octos in enumerate(octo):
+            for x_index, octopus in enumerate(row_of_octos):
+                if octopus > 9:
+                    octo[y_index][x_index] = -1000
+                    octo = increase_neighbours(octo, y_index, x_index)
+                    return check_energy_levels(octo)
+        return octo
+
+    def step(octo: list[list[int]]) -> tuple[list[list[int]], int]:
+        """Do a step"""
+        octo = raise_by_one(octo)
+        octo = check_energy_levels(octo)
+        return reset_to_zero(octo)
+
+    def check_all_flashing(octo: list[list[int]]) -> bool:
+        """See if all octopuses are flashing"""
+        return all(all(not i for i in j) for j in octo)
+
+    flash_count = 0
+    for day in range(10000):
+        octopuses, flashes = step(octopuses)
+        if day < 100:
+            flash_count += flashes
+        if check_all_flashing(octopuses):
+            all_flash_day = day + 1
+            break
+
+    print("The amount of flashes is:", flash_count)
+    assert flash_count == 1755
+
+    print("The first day all octopuses are flashing is:", all_flash_day)
+    assert all_flash_day == 212
+
+
+# https://adventofcode.com/2021/day/12
+def day12(input_file: str) -> None:
     pass
 
 
@@ -467,7 +544,7 @@ def solver(day: str) -> None:
 def all_days() -> None:
     """Run all days at once."""
     totaltime = time.time()
-    for i in range(10):
+    for i in range(12):
         print(f"===== DAY {i+1:2d} =====")
         solver(f"day{i+1}")
         print()
@@ -478,5 +555,5 @@ def all_days() -> None:
 
 
 if __name__ == "__main__":
-    solver("day11")
+    solver("day12")
     # all_days()

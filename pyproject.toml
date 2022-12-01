@@ -21,7 +21,8 @@ disable = [
     "missing-module-docstring",
     "missing-function-docstring",
     "too-few-public-methods",
-    "duplicate-code"
+    "duplicate-code",
+    "fixme"
 ]
 enable = [
     "c-extension-no-member",

@@ -1,12 +1,13 @@
 #! /usr/bin/env python3
-"""Solutions to year 2021"""
+"""Solutions to year 2021."""
 
 import math
 import time
-from typing import Callable, Optional
 from collections import Counter
+from collections.abc import Callable
 
-INPUT_FILES = dict((f"day{i+1}", f"2021/inputs/input{i+1}.txt") for i in range(25))
+INPUT_FILES = {f"day{i+1}": f"2021/inputs/input{i+1}.txt" for i in range(25)}
+
 
 # https://adventofcode.com/2021/day/1
 def day1(input_file: str) -> None:
@@ -54,7 +55,8 @@ def day2(input_file: str) -> None:
         force = int(move[1])
         coords_aim = (
             coords_aim[0] + action_aim[0] * force,
-            coords_aim[1] + action_aim[1](coords_aim) * force,  # type: ignore[no-untyped-call]
+            coords_aim[1]
+            + action_aim[1](coords_aim) * force,  # type: ignore[no-untyped-call]
             coords_aim[2] + action_aim[2] * force,
         )
     print("Multiplying the final coords gives:", coords_aim[0] * coords_aim[1])
@@ -68,7 +70,7 @@ def day3(input_file: str) -> None:
     def get_bit(
         numbers: list[str], index: int, middle: float, most_common: bool
     ) -> str:
-        """Get the most or least common bit for a given index"""
+        """Get the most or least common bit for a given index."""
         if sum(number[index] == "1" for number in numbers) >= middle:
             return "1" if most_common else "0"
         return "0" if most_common else "1"
@@ -104,12 +106,12 @@ def day4(input_file: str) -> None:
     inputs = input_file.split("\n\n")
     numbers = [int(i) for i in inputs[0].split(",")]
 
-    def make_card(card: str) -> list[list[Optional[int]]]:
-        """Creates a bingo card"""
-        new_card: list[list[Optional[int]]] = []
+    def make_card(card: str) -> list[list[int | None]]:
+        """Creates a bingo card."""
+        new_card: list[list[int | None]] = []
         rows = card.split("\n")
         for row in rows:
-            new_row: list[Optional[int]] = []
+            new_row: list[int | None] = []
             for i in range(5):
                 new_row.append(int(row[i * 3 : i * 3 + 2]))
             new_card.append(new_row)
@@ -118,17 +120,17 @@ def day4(input_file: str) -> None:
     cards = [make_card(i) for i in inputs[1:]]
 
     def check_card_for_number(
-        card: list[list[Optional[int]]], number: int
-    ) -> list[list[Optional[int]]]:
-        """Check card for occurence of number"""
+        card: list[list[int | None]], number: int
+    ) -> list[list[int | None]]:
+        """Check card for occurence of number."""
         for index, row in enumerate(card):
             for lower_index, num in enumerate(row):
                 if num == number:
                     card[index][lower_index] = None
         return card
 
-    def check_card_for_bingo(card: list[list[Optional[int]]]) -> bool:
-        """Check a card for potential bingo"""
+    def check_card_for_bingo(card: list[list[int | None]]) -> bool:
+        """Check a card for potential bingo."""
         # pylint: disable=consider-using-any-or-all
         for row in card:
             if all(i is None for i in row):
@@ -139,9 +141,9 @@ def day4(input_file: str) -> None:
         return False
 
     def iterate_over_numbers(
-        numbers: list[int], cards: list[list[list[Optional[int]]]]
+        numbers: list[int], cards: list[list[list[int | None]]]
     ) -> int:
-        """Iterate over all numbers and get the bingo + score"""
+        """Iterate over all numbers and get the bingo + score."""
         for num in numbers:
             cards = [check_card_for_number(i, num) for i in cards]
             for card in cards:
@@ -155,9 +157,9 @@ def day4(input_file: str) -> None:
     assert answer_one == 89001
 
     def iterate_over_numbers_with_removal(
-        numbers: list[int], cards: list[list[list[Optional[int]]]]
+        numbers: list[int], cards: list[list[list[int | None]]]
     ) -> int:
-        """Iterate over the numbers but remove all winning cards until one is left"""
+        """Iterate over the numbers but remove all winning cards until one is left."""
         for num in numbers:
             cards = [check_card_for_number(i, num) for i in cards]
             if len(cards) == 1:
@@ -176,7 +178,7 @@ def day4(input_file: str) -> None:
 
 
 # https://adventofcode.com/2021/day/5
-def day5(input_file: str) -> None:
+def day5(input_file: str) -> None:  # pylint: disable=too-many-locals
     lines = []
     for string in input_file.split("\n"):
         new_coords = []
@@ -223,7 +225,7 @@ def day6(input_file: str) -> None:
     fish: dict[int, int] | Counter[int] = Counter(int(i) for i in input_file.split(","))
 
     def fish_day(fish: dict[int, int] | Counter[int]) -> dict[int, int]:
-        """Compute a day of fish growth"""
+        """Compute a day of fish growth."""
         new_fish = {}
         for fish_type, amount in fish.items():
             if not fish_type:
@@ -257,7 +259,7 @@ def day7(input_file: str) -> None:
     positions = sorted(int(i) for i in input_file.split(","))
 
     def find_least_distance(pos: list[int]) -> float:
-        """Find position with least use of fuel"""
+        """Find position with least use of fuel."""
         last_fuel = float("inf")
         for position in range(pos[-1]):
             if (fuel := sum(abs(i - position) for i in pos)) > last_fuel:
@@ -270,7 +272,7 @@ def day7(input_file: str) -> None:
     assert fuel_use == 355989
 
     def find_least_distance_costly(pos: list[int]) -> float:
-        """Find position with least use of fuel with costly moves"""
+        """Find position with least use of fuel with costly moves."""
         last_fuel = float("inf")
         sum_of_integers: Callable[[int], float] = lambda x: (x * (x + 1)) / 2
         for position in range(pos[-1]):
@@ -297,7 +299,7 @@ def day8(input_file: str) -> None:
     total = 0
 
     for numbers, output in displays:
-        nums = sorted([set(i) for i in numbers.split(" ")], key=lambda x: len(x))
+        nums = sorted([set(i) for i in numbers.split(" ")], key=len)
         num_mapping: dict[int, set[str]] = {
             1: nums[0],
             2: set(),
@@ -354,7 +356,7 @@ def day9(input_file: str) -> None:
     positions: dict[tuple[int, int], int] = {}
 
     def iterate_x_row(x_coord: int, y_coord: int, position: int) -> bool:
-        """Iterate over all adjecent positions of a single position to find low point"""
+        """Iterate over all adjecent positions of position to find low point."""
         # pylint: disable=undefined-loop-variable
         if x_coord > 0 and row[x_coord - 1] <= position:
             return False
@@ -379,7 +381,7 @@ def day9(input_file: str) -> None:
         depth: int,
         visited: set[tuple[int, int]],
     ) -> int:
-        """Iterate over adjecent positions to find basin"""
+        """Iterate over adjecent positions to find basin."""
         size = 1
         visited.add((x_coord, y_coord))
         if x_coord > 0 and (x_coord - 1, y_coord) not in visited:
@@ -406,24 +408,26 @@ def day9(input_file: str) -> None:
 
 
 def solver(day: str) -> None:
-    """Solve one exercise"""
+    """Solve one exercise."""
     start = time.time()
-    with open(INPUT_FILES[day], "r", encoding="utf-8") as file:
+    with open(INPUT_FILES[day], encoding="utf-8") as file:
         globals()[day](file.read().strip())
     print(
-        f"Execution of solution for {day} took {round((time.time() - start) * 1000, 5)} ms"
+        f"Execution of solution for {day} took "
+        f"{round((time.time() - start) * 1000, 5)} ms"
     )
 
 
 def all_days() -> None:
-    """Run all days at once"""
+    """Run all days at once."""
     totaltime = time.time()
     for i in range(8):
         print(f"===== DAY {i+1:2d} =====")
         solver(f"day{i+1}")
         print()
     print(
-        f"Execution of all solutions took {round((time.time() - totaltime) * 1000, 5)} ms"
+        "Execution of all solutions took "
+        f"{round((time.time() - totaltime) * 1000, 5)} ms"
     )
 
 

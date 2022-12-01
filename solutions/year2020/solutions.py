@@ -1,5 +1,8 @@
 #! /usr/bin/env python3
-"""Solutions to year 2020"""
+# type: ignore
+# pylint: disable=too-many-nested-blocks,too-many-locals,inconsistent-return-statements
+
+"""Solutions to year 2020."""
 
 import collections
 import operator
@@ -8,9 +11,11 @@ import time
 
 import numpy
 
-INPUT_FILES = dict((f"day{i+1}", f"2020/inputs/input{i+1}.txt") for i in range(25))
+INPUT_FILES = {f"day{i+1}": f"2020/inputs/input{i+1}.txt" for i in range(25)}
 
 # https://adventofcode.com/2020/day/1
+
+
 def day1(input_file):
     expenses = [int(i) for i in input_file.split()]
 
@@ -714,7 +719,7 @@ def day18(input_file):
 # https://adventofcode.com/2020/day/19
 def day19(input_file):
     # Never look at this again ...
-    rules, messages = [i.split("\n") for i in input_file.split("\n\n")]
+    rules, messages = (i.split("\n") for i in input_file.split("\n\n"))
     result_1 = 0
 
     def split_rules(number, rule, rules_dict):
@@ -745,7 +750,7 @@ def day19(input_file):
                 )
             if number is not None:
                 rules_dict[number] = pattern
-        elif " " in rule:
+        elif " " in rule:  # pylint: disable=confusing-consecutive-elif
             sub_rules = rule.split(" ")
             for index, sub_rule in enumerate(sub_rules):
                 sub_rules[index] = split_rules(
@@ -768,7 +773,7 @@ def day19(input_file):
     print("Messages following rule 0 is", result_1)
 
     # Question 2
-    rules, messages = [i.split("\n") for i in input_file.split("\n\n")]
+    rules, messages = (i.split("\n") for i in input_file.split("\n\n"))
     result_2 = 0
     rules = dict([k.split(": ") for k in rules])
     rules["8"] = "42 | 42 8"
@@ -796,11 +801,11 @@ def day20(input_file):
             ("".join(i[0] for i in images[key]), key),
             ("".join(i[-1] for i in images[key]), key),
         ]
-    uniques = set(
+    uniques = {
         i[0]
         for i in collections.Counter(i[0] for i in sides).most_common()
         if i[1] == 1
-    )
+    }
     sides = [i for i in sides if i[0] in uniques]
     uniques2 = []
     for side in sides:
@@ -810,7 +815,7 @@ def day20(input_file):
     product_of_corners = numpy.prod([int(i[0]) for i in corners])
     print("The product of all four corners is", product_of_corners)
 
-    sides_dict = dict(sides)
+    dict(sides)
     final_image = [[] for _ in range(int(numpy.sqrt(len(images))))]
     final_image[0].append(images[corners[0][0]])
     for i in range(1, 12):
@@ -821,7 +826,7 @@ def day20(input_file):
 
 def solver(day):
     start = time.time()
-    with open(INPUT_FILES[day], "r", encoding="utf-8") as file:
+    with open(INPUT_FILES[day], encoding="utf-8") as file:
         globals()[day](file.read())
     print(
         f"Execution of solution for {day} took {round((time.time() - start) * 1000, 5)} ms"

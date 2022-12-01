@@ -10,3 +10,5 @@ For 2020 the work of @warbaque was really helpful, see
 [here](https://github.com/warbaque/adventofcode-2020)
 
 For 2021 I set the goal of writing all challenges in VIM
+
+For 2022 I'm trying to achieve my goal of 2021 again as I failed miserably...

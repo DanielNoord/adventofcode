@@ -37,7 +37,7 @@ def main() -> int:
 
     # Create the solution file if it doesn't exist yet
     if not (year_path / f"day{args.day}.py").exists():
-        print(f"Creating solution file for {args.year} day {args.day}")
+        print(f"🎅 🎅 Creating solution file for {args.year} day {args.day} 🎅 🎅")
         with open(year_path / f"day{args.day}.py", mode="w", encoding="utf-8") as file:
             file.write(
                 f"""\
@@ -68,15 +68,17 @@ def part2(data: str) -> str | int:
     # Run part 1
     start_time = time.monotonic_ns()
     part_1 = day_module.part1(data[:-1])
-    print(f"Part 1: '{part_1}' in {(time.monotonic_ns() - start_time) / 1000:.3f}μs")
+    print(
+        f"🎁 Part 1: '{part_1}' in {(time.monotonic_ns() - start_time) / 1000:.3f}μs 🎁"
+    )
 
     # Run part 2
     second_time = time.monotonic_ns()
     part_2 = day_module.part2(data[:-1])
     done = time.monotonic_ns()
     print(
-        f"Part 2: '{part_2}' in {(done - second_time) / 1000:.3f}μs "
-        f"in total {(done - start_time) / 1000:.3f}μs"
+        f"🎁 Part 2: '{part_2}' in {(done - second_time) / 1000:.3f}μs "
+        f"in total {(done - start_time) / 1000:.3f}μs 🎁"
     )
 
     if args.submit:

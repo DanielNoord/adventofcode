@@ -67,20 +67,21 @@ def part2(data: str) -> str | int:
             year_path / "inputs" / f"day{args.day}.txt", encoding="utf-8"
         ) as file:
             data = file.read()
+    data = data[:-1]  # Remove trailing newline
 
     # Dynamically import the module
     day_module = importlib.import_module(f"solutions.year{args.year}.day{args.day}")
 
     # Run part 1
     start_time = time.monotonic_ns()
-    part_1 = day_module.part1(data[:-1])
+    part_1 = day_module.part1(data)
     print(
         f"🎁 Part 1: '{part_1}' in {(time.monotonic_ns() - start_time) / 1000:.3f}μs 🎁"
     )
 
     # Run part 2
     second_time = time.monotonic_ns()
-    part_2 = day_module.part2(data[:-1])
+    part_2 = day_module.part2(data)
     done = time.monotonic_ns()
     print(
         f"🎁 Part 2: '{part_2}' in {(done - second_time) / 1000:.3f}μs "
@@ -90,7 +91,7 @@ def part2(data: str) -> str | int:
     if args.submit:
         raise NotImplementedError()  # TODO
     if args.profile:
-        Profiler(day_module.part1, day_module.part2, data[:-1], args.runs).run()
+        Profiler(day_module.part1, day_module.part2, data, args.runs).run()
 
     # Store the solution to a local file
     if args.store:

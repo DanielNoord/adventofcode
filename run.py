@@ -88,7 +88,10 @@ def part2(data: str) -> str | int:
 
     # Store the solution to a local file
     if args.store:
-        if not args.force and (year_path / "inputs" / f"day{args.day}.txt").exists():
+        if (
+            not args.force
+            and (year_path / "inputs" / f"day{args.day}solution.txt").exists()
+        ):
             print(
                 "Input file already exists, not overwriting. Use --force to overwrite"
             )

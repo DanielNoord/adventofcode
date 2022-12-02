@@ -15,14 +15,16 @@ NEEDED_TO_GET = {
 
 
 def part1(data: str) -> str | int:
-    return sum(
-        OUTCOMES[opp][you]
-        for opp, you in (game.split(" ") for game in data.split("\n"))
-    )
+    total = 0
+    for game in data.split("\n"):
+        opp, you = game.split(" ")
+        total += OUTCOMES[opp][you]
+    return total
 
 
 def part2(data: str) -> str | int:
-    return sum(
-        NEEDED_TO_GET[opp][you]
-        for opp, you in (game.split(" ") for game in data.split("\n"))
-    )
+    total = 0
+    for game in data.split("\n"):
+        opp, you = game.split(" ")
+        total += NEEDED_TO_GET[opp][you]
+    return total

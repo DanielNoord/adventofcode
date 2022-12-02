@@ -4,6 +4,7 @@ import time
 from pathlib import Path
 
 from helpers.connect import fetch_input
+from helpers.profile import Profiler
 
 
 def _parse_arguments() -> argparse.Namespace:
@@ -14,7 +15,12 @@ def _parse_arguments() -> argparse.Namespace:
     parser.add_argument("--day", required=True, type=int, help="Day to solve")
 
     parser.add_argument("--submit", action="store_true", help="Submit the solution")
+
+    # Profiling
     parser.add_argument("--profile", action="store_true", help="Profile the solution")
+    parser.add_argument(
+        "--runs", type=int, default=10, help="Number of runs to profile"
+    )
 
     # Storing the solution locally and comparing against it
     parser.add_argument("--store", action="store_true", help="Store the solution")
@@ -84,7 +90,7 @@ def part2(data: str) -> str | int:
     if args.submit:
         raise NotImplementedError()  # TODO
     if args.profile:
-        raise NotImplementedError()  # TODO
+        Profiler(day_module.part1, day_module.part2, data[:-1], args.runs).run()
 
     # Store the solution to a local file
     if args.store:

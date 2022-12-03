@@ -419,7 +419,7 @@ def day10(input_file: str) -> None:
     inc_illegals = {")": 1, "]": 2, "}": 3, ">": 4}
 
     def check_line(line: str) -> tuple[int, list[str]]:
-        """Checks a line for corruption and incompleteness"""
+        """Checks a line for corruption and incompleteness."""
         delimiters: list[str] = []
         for char in line:
             if char in openers:
@@ -456,11 +456,11 @@ def day11(input_file: str) -> None:
     x_len = len(octopuses[0]) - 1
 
     def raise_by_one(octo: list[list[int]]) -> list[list[int]]:
-        """Raise all octopuses energy levels by one"""
+        """Raise all octopuses energy levels by one."""
         return [[i + 1 for i in j] for j in octo]
 
     def reset_to_zero(octo: list[list[int]]) -> tuple[list[list[int]], int]:
-        """Resets all octopuses to zero and counts flashes"""
+        """Resets all octopuses to zero and counts flashes."""
         flashes = 0
         for y_index, row_of_octos in enumerate(octo):
             for x_index, octopus in enumerate(row_of_octos):
@@ -472,7 +472,7 @@ def day11(input_file: str) -> None:
     def increase_neighbours(
         octo: list[list[int]], y_index: int, x_index: int
     ) -> list[list[int]]:
-        """Increase energy levels of octopuses neighbouring a flashing one"""
+        """Increase energy levels of octopuses neighbouring a flashing one."""
         y_coords, x_coords = [0], [0]
         if y_index > 0:
             y_coords.append(-1)
@@ -490,7 +490,7 @@ def day11(input_file: str) -> None:
         return octo
 
     def check_energy_levels(octo: list[list[int]]) -> list[list[int]]:
-        """Checks energy levels of all octopuses and sees if one should flash"""
+        """Checks energy levels of all octopuses and sees if one should flash."""
         for y_index, row_of_octos in enumerate(octo):
             for x_index, octopus in enumerate(row_of_octos):
                 if octopus > 9:
@@ -500,13 +500,13 @@ def day11(input_file: str) -> None:
         return octo
 
     def step(octo: list[list[int]]) -> tuple[list[list[int]], int]:
-        """Do a step"""
+        """Do a step."""
         octo = raise_by_one(octo)
         octo = check_energy_levels(octo)
         return reset_to_zero(octo)
 
     def check_all_flashing(octo: list[list[int]]) -> bool:
-        """See if all octopuses are flashing"""
+        """See if all octopuses are flashing."""
         return all(all(not i for i in j) for j in octo)
 
     flash_count = 0

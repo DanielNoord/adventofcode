@@ -6,7 +6,7 @@ from __future__ import annotations
 def part1(data: str) -> str | int:
     overlapping_pairs = 0
     for pair in data.splitlines():
-        first, second = [p.split("-") for p in pair.split(",")]
+        first, second = (p.split("-") for p in pair.split(","))
         if int(first[0]) > int(second[0]):
             if int(first[-1]) <= int(second[-1]):
                 overlapping_pairs += 1
@@ -21,7 +21,7 @@ def part1(data: str) -> str | int:
 def part2(data: str) -> str | int:
     overlapping_pairs = 0
     for pair in data.splitlines():
-        first, second = [p.split("-") for p in pair.split(",")]
+        first, second = (p.split("-") for p in pair.split(","))
         if int(first[0]) <= int(second[-1]):
             if int(first[-1]) >= int(second[0]):
                 overlapping_pairs += 1

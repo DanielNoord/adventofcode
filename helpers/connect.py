@@ -6,7 +6,7 @@ import requests
 from helpers.secrets import AOC_COOKIE  # type: ignore[import]
 
 
-def fetch_input(year: str, day: str) -> str:
+def fetch_input(year: int, day: int) -> str:
     print(f"🔔 🔔 Fetching input for {year} day {day} 🔔 🔔")
     res = requests.get(
         f"https://adventofcode.com/{year}/day/{day}/input",

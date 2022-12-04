@@ -2,7 +2,8 @@ from pathlib import Path
 
 import requests
 
-from helpers.secrets import AOC_COOKIE
+# pylint: disable-next=no-name-in-module, import-error # This is by design
+from helpers.secrets import AOC_COOKIE  # type: ignore[import]
 
 
 def fetch_input(year: str, day: str) -> str:

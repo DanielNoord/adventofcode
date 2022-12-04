@@ -51,11 +51,17 @@ from __future__ import annotations
 
 
 def part1(data: str) -> str | int:
-    raise NotImplementedError("Part 1 not implemented for {args.year} day {args.day}")
+    raise NotImplementedError(
+        "Part 1 not implemented for {args.year} day {args.day}. "
+        "You can find it on https://adventofcode.com/{args.year}/day/{args.day}"
+    )
 
 
 def part2(data: str) -> str | int:
-    raise NotImplementedError("Part 2 not implemented for {args.year} day {args.day}")
+    raise NotImplementedError(
+        "Part 2 not implemented for {args.year} day {args.day}"
+        "You can find it on https://adventofcode.com/{args.year}/day/{args.day}"
+    )
 """
             )
 

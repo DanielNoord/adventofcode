@@ -28,6 +28,7 @@ enable = [
     "c-extension-no-member",
 ]
 no-docstring-rgx = "__.*__"
+good-names = "i,j,k,f,x,y"
 
 [tool.isort]
 profile = "black"

@@ -4,8 +4,6 @@
 import itertools
 import math
 import time
-from collections import Counter
-from collections.abc import Callable
 
 INPUT_FILES = {f"day{i+1}": f"2021/inputs/input{i+1}.txt" for i in range(25)}
 
@@ -129,77 +127,6 @@ def day5(input_file: str) -> None:  # pylint: disable=too-many-locals
     assert overlap_two == 17013
 
 
-# https://adventofcode.com/2021/day/6
-def day6(input_file: str) -> None:
-    fish: dict[int, int] | Counter[int] = Counter(int(i) for i in input_file.split(","))
-
-    def fish_day(fish: dict[int, int] | Counter[int]) -> dict[int, int]:
-        """Compute a day of fish growth."""
-        new_fish = {}
-        for fish_type, amount in fish.items():
-            if not fish_type:
-                new_fish[8] = amount
-                if 6 in new_fish:
-                    new_fish[6] += amount
-                else:
-                    new_fish[6] = amount
-            elif fish_type == 7:
-                if 6 in new_fish:
-                    new_fish[6] += amount
-                else:
-                    new_fish[6] = amount
-            else:
-                new_fish[fish_type - 1] = amount
-        return new_fish
-
-    for _ in range(80):
-        fish = fish_day(fish)
-    print("After 80 days the amount of fish is:", sum(fish.values()))
-    assert sum(fish.values()) == 390011
-
-    for _ in range(256 - 80):
-        fish = fish_day(fish)
-    print("After 256 days the amount of fish is:", sum(fish.values()))
-    assert sum(fish.values()) == 1746710169834
-
-
-# https://adventofcode.com/2021/day/7
-def day7(input_file: str) -> None:
-    positions = sorted(int(i) for i in input_file.split(","))
-
-    def find_least_distance(pos: list[int]) -> float:
-        """Find position with least use of fuel."""
-        last_fuel = float("inf")
-        for position in range(pos[-1]):
-            if (fuel := sum(abs(i - position) for i in pos)) > last_fuel:
-                break
-            last_fuel = fuel
-        return last_fuel
-
-    fuel_use = int(find_least_distance(positions))
-    print("The fuel used to go to the optimal position is:", fuel_use)
-    assert fuel_use == 355989
-
-    def find_least_distance_costly(pos: list[int]) -> float:
-        """Find position with least use of fuel with costly moves."""
-        last_fuel = float("inf")
-        sum_of_integers: Callable[[int], float] = lambda x: (x * (x + 1)) / 2
-        for position in range(pos[-1]):
-            if (
-                fuel := sum(sum_of_integers(abs(i - position)) for i in pos)
-            ) > last_fuel:
-                break
-            last_fuel = fuel
-        return last_fuel
-
-    costly_fuel_use = int(find_least_distance_costly(positions))
-    print(
-        "The fuel is used to go the optimal position with costly movement is:",
-        costly_fuel_use,
-    )
-    assert costly_fuel_use == 102245489
-
-
 # https://adventofcode.com/2021/day/8
 def day8(input_file: str) -> None:
     displays = [i.split(" | ") for i in input_file.split("\n")]
@@ -316,47 +243,6 @@ def day9(input_file: str) -> None:
     assert product_largest_basins == 931200
 
 
-# https://adventofcode.com/2021/day/10
-def day10(input_file: str) -> None:
-    lines = input_file.split("\n")
-    corruption_score = 0
-    incomplete_score: list[int] = []
-
-    openers = {"(": ")", "{": "}", "[": "]", "<": ">"}
-    cor_illegals = {")": 3, "]": 57, "}": 1197, ">": 25137}
-    inc_illegals = {")": 1, "]": 2, "}": 3, ">": 4}
-
-    def check_line(line: str) -> tuple[int, list[str]]:
-        """Checks a line for corruption and incompleteness."""
-        delimiters: list[str] = []
-        for char in line:
-            if char in openers:
-                delimiters.append(char)
-            else:
-                if char != openers[delimiters[-1]]:
-                    return cor_illegals[char], delimiters
-                delimiters.pop()
-        return 0, delimiters
-
-    for line in lines:
-        line_info = check_line(line)
-        if line_info[0]:
-            corruption_score += line_info[0]
-        elif line_info[1]:
-            score = 0
-            for unclosed in line_info[1][::-1]:
-                score *= 5
-                score += inc_illegals[openers[unclosed]]
-            incomplete_score.append(score)
-
-    print("The corruption score is:", corruption_score)
-    assert corruption_score == 387363
-
-    middle_incomplete = sorted(incomplete_score)[len(incomplete_score) // 2]
-    print("The middle incomplete score is:", middle_incomplete)
-    assert middle_incomplete == 4330777059
-
-
 # https://adventofcode.com/2021/day/11
 def day11(input_file: str) -> None:
     octopuses = [[int(i) for i in j] for j in input_file.split("\n")]
@@ -431,11 +317,6 @@ def day11(input_file: str) -> None:
 
     print("The first day all octopuses are flashing is:", all_flash_day)
     assert all_flash_day == 212
-
-
-# https://adventofcode.com/2021/day/12
-def day12(input_file: str) -> None:
-    pass
 
 
 def solver(day: str) -> None:

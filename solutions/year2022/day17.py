@@ -16,12 +16,12 @@ ROCKS: list[list[tuple[int, int]]] = [
 
 JETS: dict[str, int] = {">": 1, "<": -1}
 
-ROCK_MOVES: dict[tuple[int, ...], list[int]] = {}
+ROCK_MOVES: dict[tuple[tuple[int, ...], int], list[int]] = {}
 
 
 def move_x(rock_xs: list[int], jet: int) -> list[int]:
-    if (*rock_xs, jet) in ROCK_MOVES:
-        return ROCK_MOVES[*rock_xs, jet]
+    if (tuple(rock_xs), jet) in ROCK_MOVES:
+        return ROCK_MOVES[tuple(rock_xs), jet]
 
     new_list: list[int] = []
     for x in rock_xs:
@@ -29,7 +29,7 @@ def move_x(rock_xs: list[int], jet: int) -> list[int]:
             return rock_xs
         new_list.append(x + jet)
 
-    ROCK_MOVES[*rock_xs, jet] = new_list
+    ROCK_MOVES[tuple(rock_xs), jet] = new_list
     return new_list
 
 

@@ -23,7 +23,7 @@ repos:
       - id: pyupgrade
         args: [--py311-plus]
   - repo: https://github.com/PyCQA/isort
-    rev: 5.10.1
+    rev: v5.11.3
     hooks:
       - id: isort
   - repo: https://github.com/psf/black
@@ -37,7 +37,7 @@ repos:
         exclude: .*/year2020/.*
         additional_dependencies: [flake8-typing-imports==1.14.0]
   - repo: https://github.com/pycqa/pylint
-    rev: v2.15.8
+    rev: v2.15.9
     hooks:
       - id: pylint
         args: [--rcfile=pyproject.toml]

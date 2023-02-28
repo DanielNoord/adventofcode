@@ -3,10 +3,10 @@ from __future__ import annotations
 from collections.abc import Iterable
 
 
-def pretty_print_list_of_coords(
+def pretty_print_iterable_of_coords(
     coords: Iterable[tuple[int, int]], reverse: bool = False
 ) -> None:
-    """Transform a list of coordinates into a grid with filled in squares."""
+    """Transform an iterable of coordinates into a grid with filled in squares."""
     max_x = max(c[0] for c in coords)
     min_x = min(c[0] for c in coords)
     max_y = max(c[1] for c in coords)

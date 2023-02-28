@@ -1,5 +1,3 @@
-[![Linters and checkers](https://github.com/DanielNoord/adventofcode/actions/workflows/main.yml/badge.svg)](https://github.com/DanielNoord/adventofcode/actions/workflows/main.yml)
-
 # Advent of Code
 
 My own solutions to [Advent of Code](https://adventofcode.com)
@@ -11,4 +9,5 @@ For 2020 the work of @warbaque was really helpful, see
 
 For 2021 I set the goal of writing all challenges in VIM
 
-For 2022 I'm trying to achieve my goal of 2021 again as I failed miserably...
+For 2022 I'm trying to achieve my goal of 2021 again as I failed miserably... And I
+failed again, but did eventually finish all challenges

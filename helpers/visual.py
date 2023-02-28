@@ -26,9 +26,9 @@ def pretty_print_iterable_of_coords(
 
 
 def pretty_print_dict_of_coords(
-    coords: dict[tuple[int, int], str], reverse: bool = False
+    coords: dict[tuple[int, int], str], reverse: bool = False, filler: str = " "
 ) -> None:
-    """Transform a dictionary of coordinates into a grid with empty squares."""
+    """Transform a dictionary of coordinates into a grid with the filler."""
     max_x = max(c[0] for c in coords.keys())
     min_x = min(c[0] for c in coords.keys())
     max_y = max(c[1] for c in coords.keys())
@@ -36,7 +36,7 @@ def pretty_print_dict_of_coords(
 
     strings: list[str] = []
     for y_coord in range(max_y, min_y - 1, -1):
-        string = [coords.get((x, y_coord), " ") for x in range(min_x, max_x + 1)]
+        string = [coords.get((x, y_coord), filler) for x in range(min_x, max_x + 1)]
         strings.append("".join(string))
 
     if reverse:

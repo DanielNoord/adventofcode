@@ -1,22 +1,5 @@
 use regex::Regex;
 
-struct GameSet {
-    green: u32,
-    red: u32,
-    blue: u32,
-}
-
-fn is_valid(set: GameSet) -> bool {
-    if set.red > 12 {
-        return false;
-    } else if set.green > 13 {
-        return false;
-    } else if set.blue > 14 {
-        return false;
-    }
-    true
-}
-
 pub fn part1(input: &String) -> String {
     let mut total: u32 = 0;
     let green_pat = Regex::new(r"(\d+) green").unwrap();

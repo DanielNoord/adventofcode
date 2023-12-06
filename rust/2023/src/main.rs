@@ -4,8 +4,8 @@ use std::fs;
 use aoc_2023::get_funcs;
 
 fn do_day(day: u32) {
-    let mut input =
-        fs::read_to_string(format!("inputs/day{day}.txt")).expect("File should be there");
+    let mut input = fs::read_to_string(format!("inputs/day{day}.txt"))
+        .expect("File should be there");
     input = input.trim_end().to_string();
 
     let results = get_funcs(day, &input);

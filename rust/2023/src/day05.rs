@@ -143,7 +143,8 @@ pub fn part2(input: &String) -> String {
         .map(|c| (c[0], c[0] + c[1] - 1))
         .collect();
 
-    let soils: Vec<(u64, u64)> = find_next_ranges(seed_ranges, split_input.next().unwrap());
+    let soils: Vec<(u64, u64)> =
+        find_next_ranges(seed_ranges, split_input.next().unwrap());
     let fertilizers = find_next_ranges(soils, split_input.next().unwrap());
     let waters = find_next_ranges(fertilizers, split_input.next().unwrap());
     let lights = find_next_ranges(waters, split_input.next().unwrap());

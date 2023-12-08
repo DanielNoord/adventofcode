@@ -2,16 +2,16 @@ use std::{cmp::Ordering, collections::HashMap, str::FromStr};
 
 #[derive(Debug, Eq, PartialEq, Hash, Clone, PartialOrd, Ord)]
 enum CardValue {
-    ONE,
-    TWO,
-    THREE,
-    FOUR,
-    FIVE,
-    SIX,
-    SEVEN,
-    EIGHT,
-    NINE,
-    TEN,
+    One,
+    Two,
+    Three,
+    Four,
+    Five,
+    Six,
+    Seven,
+    Eight,
+    Nine,
+    Ten,
     J,
     Q,
     K,
@@ -25,16 +25,16 @@ impl From<char> for CardValue {
             'K' => CardValue::K,
             'Q' => CardValue::Q,
             'J' => CardValue::J,
-            'T' => CardValue::TEN,
-            '9' => CardValue::NINE,
-            '8' => CardValue::EIGHT,
-            '7' => CardValue::SEVEN,
-            '6' => CardValue::SIX,
-            '5' => CardValue::FIVE,
-            '4' => CardValue::FOUR,
-            '3' => CardValue::THREE,
-            '2' => CardValue::TWO,
-            '1' => CardValue::ONE,
+            'T' => CardValue::Ten,
+            '9' => CardValue::Nine,
+            '8' => CardValue::Eight,
+            '7' => CardValue::Seven,
+            '6' => CardValue::Six,
+            '5' => CardValue::Five,
+            '4' => CardValue::Four,
+            '3' => CardValue::Three,
+            '2' => CardValue::Two,
+            '1' => CardValue::One,
             _ => panic!("Unexpected value {value}"),
         }
     }
@@ -232,7 +232,7 @@ fn compare_cards_part_two(value: &Hand, other: &Hand) -> Ordering {
     }
 }
 
-pub fn part1(input: &String) -> String {
+pub fn part1(input: &str) -> String {
     let mut pairs = input
         .lines()
         .map(|x| x.split_at(5))
@@ -251,7 +251,7 @@ pub fn part1(input: &String) -> String {
     values.to_string()
 }
 
-pub fn part2(input: &String) -> String {
+pub fn part2(input: &str) -> String {
     let mut pairs = input
         .lines()
         .map(|x| x.split_at(5))

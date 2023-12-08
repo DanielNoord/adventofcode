@@ -46,7 +46,7 @@ pub fn part1(input: &str) -> String {
     steps.to_string()
 }
 
-pub fn part2(input: &String) -> String {
+pub fn part2(input: &str) -> String {
     let mut split_input = input.split("\n\n");
     let instructions_str = split_input.next().unwrap();
 
@@ -58,7 +58,7 @@ pub fn part2(input: &String) -> String {
 
     let mut starts: Vec<&String> = nodes_map
         .iter()
-        .filter(|x| x.0.ends_with("A"))
+        .filter(|x| x.0.ends_with('A'))
         .map(|x| x.0)
         .collect();
 
@@ -77,7 +77,7 @@ pub fn part2(input: &String) -> String {
             } else {
                 *value = &nodes_map.get(&value.to_owned()).unwrap().right;
             }
-            if value.ends_with("Z") {
+            if value.ends_with('Z') {
                 if steps - previous_z_step == cycle_steps {
                     cycles.push(cycle_steps);
                     break;

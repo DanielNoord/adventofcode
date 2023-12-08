@@ -13,7 +13,7 @@ fn make_orbit_map(input: &String) -> HashMap<&str, &str> {
     relations
 }
 
-pub fn part1(input: &String) -> String {
+pub fn part1(input: &str) -> String {
     let relations = make_orbit_map(input);
 
     let mut total_orbits = 0;
@@ -41,7 +41,7 @@ fn get_route_to_com(orbit_map: HashMap<&str, &str>, start: &str) -> Vec<String> 
     steps
 }
 
-pub fn part2(input: &String) -> String {
+pub fn part2(input: &str) -> String {
     let relations = make_orbit_map(input);
 
     let you_path = get_route_to_com(relations.clone(), "YOU");

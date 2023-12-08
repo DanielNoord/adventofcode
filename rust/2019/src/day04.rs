@@ -41,7 +41,7 @@ fn is_valid_part2(num: u32) -> bool {
     return doubles;
 }
 
-pub fn part1(input: &String) -> String {
+pub fn part1(input: &str) -> String {
     let num_vec: Vec<&str> = input.split("-").collect();
     let mut nums = num_vec.iter();
     let lowest: u32 = nums.next().unwrap().parse().expect("");
@@ -58,7 +58,7 @@ pub fn part1(input: &String) -> String {
     matches.to_string()
 }
 
-pub fn part2(input: &String) -> String {
+pub fn part2(input: &str) -> String {
     let num_vec: Vec<&str> = input.split("-").collect();
     let mut nums = num_vec.iter();
     let lowest: u32 = nums.next().unwrap().parse().expect("");

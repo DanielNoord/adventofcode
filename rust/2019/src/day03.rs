@@ -23,7 +23,7 @@ fn get_all_positions(line: &str) -> HashMap<(i32, i32), u32> {
     result
 }
 
-pub fn part1(input: &String) -> String {
+pub fn part1(input: &str) -> String {
     let mut lines: std::str::Lines<'_> = input.lines();
     let line1 = get_all_positions(lines.next().expect("Expected a first line"));
     let mut line2 = get_all_positions(lines.next().expect("Expected a second line"));
@@ -40,7 +40,7 @@ pub fn part1(input: &String) -> String {
     return result.to_string();
 }
 
-pub fn part2(input: &String) -> String {
+pub fn part2(input: &str) -> String {
     let mut lines: std::str::Lines<'_> = input.lines();
     let line1 = get_all_positions(lines.next().expect("Expected a first line"));
     let mut line2 = get_all_positions(lines.next().expect("Expected a second line"));

@@ -15,12 +15,12 @@ fn get_all_coords(y_coord: usize, x_coord: usize) -> Vec<(usize, usize)> {
     coords
 }
 
-pub fn part1(input: &String) -> String {
+pub fn part1(input: &str) -> String {
     let mut valid_positions: HashSet<(usize, usize)> = HashSet::new();
 
     for (line_index, line) in input.lines().enumerate() {
         for (char_index, char) in line.char_indices() {
-            if char != '.' && !char.is_digit(10) {
+            if char != '.' && !char.is_ascii_digit() {
                 for valid_pos in get_all_coords(line_index, char_index) {
                     valid_positions.insert(valid_pos);
                 }
@@ -33,7 +33,7 @@ pub fn part1(input: &String) -> String {
         let mut current_number: String = String::new();
         let mut is_valid: bool = false;
         for (char_index, char) in line.char_indices() {
-            if char.is_digit(10) {
+            if char.is_ascii_digit() {
                 current_number.push(char);
                 if !is_valid {
                     is_valid = valid_positions.contains(&(line_index, char_index));
@@ -56,7 +56,7 @@ pub fn part1(input: &String) -> String {
     total.to_string()
 }
 
-pub fn part2(input: &String) -> String {
+pub fn part2(input: &str) -> String {
     let mut valid_positions: HashMap<(usize, usize), (usize, usize)> = HashMap::new();
 
     for (line_index, line) in input.lines().enumerate() {
@@ -75,7 +75,7 @@ pub fn part2(input: &String) -> String {
         let mut is_valid: bool = false;
         let mut gear: (usize, usize) = (usize::MIN, usize::MIN);
         for (char_index, char) in line.char_indices() {
-            if char.is_digit(10) {
+            if char.is_ascii_digit() {
                 current_number.push(char);
                 if !is_valid {
                     if valid_positions.contains_key(&(line_index, char_index)) {

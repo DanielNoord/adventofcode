@@ -1,6 +1,6 @@
 use regex::Regex;
 
-pub fn part1(input: &String) -> String {
+pub fn part1(input: &str) -> String {
     let mut total: u32 = 0;
     let green_pat = Regex::new(r"(\d+) green").unwrap();
     let red_pat = Regex::new(r"(\d+) red").unwrap();
@@ -52,7 +52,7 @@ pub fn part1(input: &String) -> String {
     total.to_string()
 }
 
-pub fn part2(input: &String) -> String {
+pub fn part2(input: &str) -> String {
     let mut total: u32 = 0;
     let green_pat = Regex::new(r"(\d+) green").unwrap();
     let red_pat = Regex::new(r"(\d+) red").unwrap();

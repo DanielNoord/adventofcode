@@ -1,4 +1,4 @@
-pub fn part1(input: &String) -> String {
+pub fn part1(input: &str) -> String {
     let mut total: u32 = 0;
     for line in input.lines() {
         total += line.parse::<u32>().unwrap() / 3 - 2;
@@ -7,7 +7,7 @@ pub fn part1(input: &String) -> String {
     total.to_string()
 }
 
-pub fn part2(input: &String) -> String {
+pub fn part2(input: &str) -> String {
     let mut total: u64 = 0;
     for line in input.lines() {
         let mut value: u64 = line.parse().expect("Should be a positive integer");

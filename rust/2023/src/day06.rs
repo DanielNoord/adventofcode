@@ -1,4 +1,4 @@
-pub fn part1(input: &String) -> String {
+pub fn part1(input: &str) -> String {
     let mut lines = input.lines();
     let times = lines.next().unwrap().split_ascii_whitespace();
     let mut time_destination_pairs = lines
@@ -29,7 +29,7 @@ pub fn part1(input: &String) -> String {
     total_options.to_string()
 }
 
-pub fn part2(input: &String) -> String {
+pub fn part2(input: &str) -> String {
     let mut lines = input.lines();
     let time: u64 = lines
         .next()

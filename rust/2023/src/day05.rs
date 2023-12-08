@@ -106,7 +106,7 @@ fn find_next_ranges(ranges: Vec<(u64, u64)>, mapping: &str) -> Vec<(u64, u64)> {
     new_ranges
 }
 
-pub fn part1(input: &String) -> String {
+pub fn part1(input: &str) -> String {
     let mut split_input = input.split("\n\n");
     let seeds = split_input.next().unwrap();
 
@@ -130,7 +130,7 @@ pub fn part1(input: &String) -> String {
     result.to_string()
 }
 
-pub fn part2(input: &String) -> String {
+pub fn part2(input: &str) -> String {
     let mut split_input = input.split("\n\n");
     let seeds = split_input.next().unwrap();
     let seed_ranges = seeds

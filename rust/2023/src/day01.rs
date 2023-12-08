@@ -1,6 +1,6 @@
 fn get_first_digit(line: &str) -> char {
     for char in line.chars() {
-        if char.is_digit(10) {
+        if char.is_ascii_digit() {
             return char;
         }
     }
@@ -9,7 +9,7 @@ fn get_first_digit(line: &str) -> char {
 
 fn get_last_digit(line: &str) -> char {
     for char in line.chars().rev() {
-        if char.is_digit(10) {
+        if char.is_ascii_digit() {
             return char;
         }
     }
@@ -150,7 +150,7 @@ fn get_letter_number_last(line: &str) -> String {
 fn replace_digits(line: &str) -> String {
     let mut first_index = line.len();
     for (index, char) in line.char_indices() {
-        if char.is_digit(10) {
+        if char.is_ascii_digit() {
             first_index = index;
             break;
         }
@@ -160,7 +160,7 @@ fn replace_digits(line: &str) -> String {
     replline.to_owned()
 }
 
-pub fn part1(input: &String) -> String {
+pub fn part1(input: &str) -> String {
     let mut total: u32 = 0;
     for line in input.lines() {
         let mut number = String::new();
@@ -174,7 +174,7 @@ pub fn part1(input: &String) -> String {
     total.to_string()
 }
 
-pub fn part2(input: &String) -> String {
+pub fn part2(input: &str) -> String {
     let mut total: u32 = 0;
     for line in input.lines() {
         let mut number = String::new();

@@ -1,6 +1,6 @@
 use std::collections::{HashMap, HashSet};
 
-pub fn part1(input: &String) -> String {
+pub fn part1(input: &str) -> String {
     let mut total = 0;
     for line in input.lines() {
         let mut split_line = line.split(": ");
@@ -32,7 +32,7 @@ pub fn part1(input: &String) -> String {
     total.to_string()
 }
 
-pub fn part2(input: &String) -> String {
+pub fn part2(input: &str) -> String {
     let mut original_scores: HashMap<usize, i32> = HashMap::new();
     for (index, line) in input.lines().enumerate() {
         let mut split_line = line.split(": ");

@@ -1,6 +1,6 @@
 use crate::intcode;
 
-pub fn part1(input: &String) -> String {
+pub fn part1(input: &str) -> String {
     let mut values: Vec<&str> = input.split(",").collect();
 
     // Change noun and verb as per instructions
@@ -12,7 +12,7 @@ pub fn part1(input: &String) -> String {
     result.to_string()
 }
 
-pub fn part2(input: &String) -> String {
+pub fn part2(input: &str) -> String {
     let original_values: Vec<&str> = input.split(",").collect();
 
     fn get_result(original_values: Vec<&str>) -> u32 {

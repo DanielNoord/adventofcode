@@ -1,12 +1,8 @@
 pub fn part1(input: &str) -> String {
     let mut lines = input.lines();
     let times = lines.next().unwrap().split_ascii_whitespace();
-    let mut time_destination_pairs = lines
-        .next()
-        .unwrap()
-        .split_ascii_whitespace()
-        .zip(times)
-        .into_iter();
+    let mut time_destination_pairs =
+        lines.next().unwrap().split_ascii_whitespace().zip(times);
 
     // Skip the introduction text
     time_destination_pairs.next();

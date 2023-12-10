@@ -74,11 +74,11 @@ fn get_letter_number(line: &str, mut index: usize) -> String {
         new_value = "9";
     }
 
-    if to_replace != "" {
+    if !to_replace.is_empty() {
         return line.replacen(to_replace, new_value, 1);
     }
 
-    return line.to_string();
+    line.to_string()
 }
 
 fn get_letter_number_last(line: &str) -> String {
@@ -140,11 +140,11 @@ fn get_letter_number_last(line: &str) -> String {
         new_value = "9";
     }
 
-    if to_replace != "" {
+    if !to_replace.is_empty() {
         return line.replace(to_replace, new_value);
     }
 
-    return line.to_string();
+    line.to_string()
 }
 
 fn replace_digits(line: &str) -> String {

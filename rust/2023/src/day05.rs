@@ -15,7 +15,7 @@ fn parse_destination_source_map(mapping: &str) -> (Vec<u64>, HashMap<u64, Desina
     let mut values: HashMap<u64, Desination> = HashMap::new();
 
     for mapped_row in mapping_lines {
-        let mut row_numbers = mapped_row.split(" ");
+        let mut row_numbers = mapped_row.split(' ');
         let destination: u64 = row_numbers.next().unwrap().parse().unwrap();
         let source: u64 = row_numbers.next().unwrap().parse().unwrap();
         let range: u64 = row_numbers.next().unwrap().parse().unwrap();

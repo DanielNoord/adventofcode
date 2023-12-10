@@ -2,7 +2,7 @@ pub fn part1(input: &str) -> String {
     let mut total = 0;
     for line in input.lines() {
         let mut numbers: Vec<i32> =
-            Vec::from_iter(line.split(" ").map(|x| x.parse().unwrap()));
+            Vec::from_iter(line.split(' ').map(|x| x.parse().unwrap()));
         let mut last_numbers: Vec<i32> = Vec::new();
 
         while !numbers.iter().all(|x| x == &0) {
@@ -28,7 +28,7 @@ pub fn part2(input: &str) -> String {
 
     for line in input.lines() {
         let mut numbers: Vec<i32> =
-            Vec::from_iter(line.split(" ").map(|x| x.parse().unwrap()));
+            Vec::from_iter(line.split(' ').map(|x| x.parse().unwrap()));
         let mut first_numbers: Vec<i32> = vec![numbers[0]];
 
         while !numbers.iter().all(|x| x == &0) {

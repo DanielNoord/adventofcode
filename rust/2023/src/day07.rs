@@ -64,7 +64,7 @@ impl FromStr for Hand {
 }
 
 impl Hand {
-    fn calculate_score(self: &Self) -> CardScore {
+    fn calculate_score(&self) -> CardScore {
         let mut result: HashMap<CardValue, u32> = HashMap::new();
         for card in [
             &self.card_one,
@@ -99,7 +99,7 @@ impl Hand {
         }
     }
 
-    fn calculate_score_part_two(self: &Self) -> CardScore {
+    fn calculate_score_part_two(&self) -> CardScore {
         let mut result: HashMap<CardValue, u32> = HashMap::new();
         let scores = self.get_scores();
         let scotes_iter = scores.iter().filter(|x| x != &&CardValue::J);
@@ -149,7 +149,7 @@ impl Hand {
         score
     }
 
-    fn get_scores(self: &Self) -> [CardValue; 5] {
+    fn get_scores(&self) -> [CardValue; 5] {
         [
             self.card_one.clone(),
             self.card_two.clone(),
@@ -172,7 +172,7 @@ enum CardScore {
 }
 
 impl CardScore {
-    fn upgrade(self: &Self) -> CardScore {
+    fn upgrade(self) -> CardScore {
         match self {
             CardScore::HighCard => CardScore::OnePair,
             CardScore::OnePair => CardScore::ThreeOfAKind,
@@ -243,7 +243,7 @@ pub fn part1(input: &str) -> String {
         .iter()
         .enumerate()
         .map(|x| {
-            (x.0 + 1) as u32 * x.1 .1.strip_prefix(" ").unwrap().parse::<u32>().unwrap()
+            (x.0 + 1) as u32 * x.1 .1.strip_prefix(' ').unwrap().parse::<u32>().unwrap()
         })
         .sum();
 
@@ -262,7 +262,7 @@ pub fn part2(input: &str) -> String {
         .iter()
         .enumerate()
         .map(|x| {
-            (x.0 + 1) as u32 * x.1 .1.strip_prefix(" ").unwrap().parse::<u32>().unwrap()
+            (x.0 + 1) as u32 * x.1 .1.strip_prefix(' ').unwrap().parse::<u32>().unwrap()
         })
         .sum();
 

@@ -3,16 +3,16 @@ use std::collections::{HashMap, HashSet};
 fn get_all_coords(y_coord: usize, x_coord: usize) -> Vec<(usize, usize)> {
     // This assumes that there are no symbols in the outermost rows or columns
     // And that no symbol and digit can be on the same spot at the same time
-    let mut coords: Vec<(usize, usize)> = Vec::new();
-    coords.push((y_coord - 1, x_coord - 1));
-    coords.push((y_coord - 1, x_coord));
-    coords.push((y_coord - 1, x_coord + 1));
-    coords.push((y_coord, x_coord - 1));
-    coords.push((y_coord, x_coord + 1));
-    coords.push((y_coord + 1, x_coord - 1));
-    coords.push((y_coord + 1, x_coord));
-    coords.push((y_coord + 1, x_coord + 1));
-    coords
+    vec![
+        (y_coord - 1, x_coord - 1),
+        (y_coord - 1, x_coord),
+        (y_coord - 1, x_coord + 1),
+        (y_coord, x_coord - 1),
+        (y_coord, x_coord + 1),
+        (y_coord + 1, x_coord - 1),
+        (y_coord + 1, x_coord),
+        (y_coord + 1, x_coord + 1),
+    ]
 }
 
 pub fn part1(input: &str) -> String {
@@ -39,7 +39,7 @@ pub fn part1(input: &str) -> String {
                     is_valid = valid_positions.contains(&(line_index, char_index));
                 }
             } else {
-                if is_valid && current_number != "" {
+                if is_valid && !current_number.is_empty() {
                     let value: u32 = current_number.parse().unwrap();
                     total += value;
                 }
@@ -47,7 +47,7 @@ pub fn part1(input: &str) -> String {
                 is_valid = false;
             }
         }
-        if is_valid && current_number != "" {
+        if is_valid && !current_number.is_empty() {
             let value: u32 = current_number.parse().unwrap();
             total += value;
         }
@@ -77,17 +77,16 @@ pub fn part2(input: &str) -> String {
         for (char_index, char) in line.char_indices() {
             if char.is_ascii_digit() {
                 current_number.push(char);
-                if !is_valid {
-                    if valid_positions.contains_key(&(line_index, char_index)) {
-                        is_valid = true;
-                        gear = valid_positions
-                            .get(&(line_index, char_index))
-                            .unwrap()
-                            .to_owned();
-                    }
+                if !is_valid && valid_positions.contains_key(&(line_index, char_index))
+                {
+                    is_valid = true;
+                    gear = valid_positions
+                        .get(&(line_index, char_index))
+                        .unwrap()
+                        .to_owned();
                 }
             } else {
-                if is_valid && current_number != "" {
+                if is_valid && !current_number.is_empty() {
                     let value: u32 = current_number.parse().unwrap();
                     gears
                         .entry(gear)
@@ -101,7 +100,7 @@ pub fn part2(input: &str) -> String {
                 is_valid = false;
             }
         }
-        if is_valid && current_number != "" {
+        if is_valid && !current_number.is_empty() {
             let value: u32 = current_number.parse().unwrap();
             gears
                 .entry(gear)

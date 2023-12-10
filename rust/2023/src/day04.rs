@@ -6,8 +6,8 @@ pub fn part1(input: &str) -> String {
         let mut split_line = line.split(": ");
         let mut numbers = split_line.nth(1).unwrap().split(" | ");
         let mut good_numbers_vec: HashSet<String> = HashSet::new();
-        for num in numbers.next().unwrap().split(" ") {
-            if num == "" {
+        for num in numbers.next().unwrap().split(' ') {
+            if num.is_empty() {
                 continue;
             } else {
                 good_numbers_vec.insert(num.to_string());
@@ -15,8 +15,8 @@ pub fn part1(input: &str) -> String {
         }
 
         let mut score = 0;
-        for num in numbers.next().unwrap().split(" ") {
-            if num == "" {
+        for num in numbers.next().unwrap().split(' ') {
+            if num.is_empty() {
                 continue;
             } else if good_numbers_vec.contains(num) {
                 if score > 0 {
@@ -38,8 +38,8 @@ pub fn part2(input: &str) -> String {
         let mut split_line = line.split(": ");
         let mut numbers = split_line.nth(1).unwrap().split(" | ");
         let mut good_numbers_vec: HashSet<String> = HashSet::new();
-        for num in numbers.next().unwrap().split(" ") {
-            if num == "" {
+        for num in numbers.next().unwrap().split(' ') {
+            if num.is_empty() {
                 continue;
             } else {
                 good_numbers_vec.insert(num.to_string());
@@ -47,8 +47,8 @@ pub fn part2(input: &str) -> String {
         }
 
         let mut score = 0;
-        for num in numbers.next().unwrap().split(" ") {
-            if num == "" {
+        for num in numbers.next().unwrap().split(' ') {
+            if num.is_empty() {
                 continue;
             } else if good_numbers_vec.contains(num) {
                 score += 1;

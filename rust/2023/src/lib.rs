@@ -7,7 +7,7 @@ mod day06;
 mod day07;
 mod day08;
 mod day09;
-pub fn get_funcs(day: u32, input: &String) -> (String, String) {
+pub fn get_funcs(day: u32, input: &str) -> (String, String) {
     match day {
         1 => (day01::part1(input), day01::part2(input)),
         2 => (day02::part1(input), day02::part2(input)),

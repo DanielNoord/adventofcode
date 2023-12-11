@@ -3,3 +3,4 @@ members = [
     "./rust/2019",
     "./rust/2023",
 ]
+resolver = "2"

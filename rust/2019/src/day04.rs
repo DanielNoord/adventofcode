@@ -3,7 +3,7 @@ fn is_valid(num: u32) -> bool {
     let mut prev = -1;
     for inner in num.to_string().chars() {
         let inner_val: i32 = inner.to_string().parse().expect("");
-        if doubles == false && prev == inner_val {
+        if !doubles && prev == inner_val {
             doubles = true;
         }
         if inner_val < prev {
@@ -11,7 +11,7 @@ fn is_valid(num: u32) -> bool {
         }
         prev = inner_val;
     }
-    return doubles;
+    doubles
 }
 
 fn is_valid_part2(num: u32) -> bool {
@@ -23,7 +23,7 @@ fn is_valid_part2(num: u32) -> bool {
         if prev == inner_val {
             in_double += 1;
         } else {
-            if doubles == false && in_double == 1 {
+            if !doubles && in_double == 1 {
                 doubles = true;
             }
             in_double = 0;
@@ -38,11 +38,11 @@ fn is_valid_part2(num: u32) -> bool {
     if in_double == 1 {
         return true;
     }
-    return doubles;
+    doubles
 }
 
 pub fn part1(input: &str) -> String {
-    let num_vec: Vec<&str> = input.split("-").collect();
+    let num_vec: Vec<&str> = input.split('-').collect();
     let mut nums = num_vec.iter();
     let lowest: u32 = nums.next().unwrap().parse().expect("");
     let highest: u32 = nums.next().unwrap().parse().expect("");
@@ -59,7 +59,7 @@ pub fn part1(input: &str) -> String {
 }
 
 pub fn part2(input: &str) -> String {
-    let num_vec: Vec<&str> = input.split("-").collect();
+    let num_vec: Vec<&str> = input.split('-').collect();
     let mut nums = num_vec.iter();
     let lowest: u32 = nums.next().unwrap().parse().expect("");
     let highest: u32 = nums.next().unwrap().parse().expect("");

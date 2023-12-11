@@ -62,15 +62,11 @@ fn make_move(position: (usize, usize), direction: &Directions) -> Vec<(usize, us
     }
 }
 
-fn find_loop(
-    input: &str,
-) -> (
-    u32,
-    HashMap<usize, HashMap<usize, Directions>>,
-    HashMap<usize, HashSet<usize>>,
-) {
-    let mut map: HashMap<usize, HashMap<usize, Directions>> = HashMap::new();
-    let mut position_of_s = (0 as usize, 0 as usize);
+type PipesMap = HashMap<usize, HashMap<usize, Directions>>;
+
+fn find_loop(input: &str) -> (u32, PipesMap, HashMap<usize, HashSet<usize>>) {
+    let mut map: PipesMap = HashMap::new();
+    let mut position_of_s = (0, 0);
     for (index, line) in input.lines().enumerate() {
         let row: HashMap<usize, Directions, RandomState> = HashMap::from_iter(
             line.char_indices().map(|e| (e.0, e.1.try_into().unwrap())),
@@ -122,7 +118,7 @@ fn find_loop(
             if valid {
                 pipes_in_cycle
                     .entry(current_position.0)
-                    .or_insert(HashSet::new())
+                    .or_default()
                     .insert(current_position.1);
                 new_pointers.extend(potential_new_pointers);
             }

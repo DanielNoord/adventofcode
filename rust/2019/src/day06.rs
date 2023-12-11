@@ -1,10 +1,10 @@
 use std::collections::HashMap;
 
-fn make_orbit_map(input: &String) -> HashMap<&str, &str> {
+fn make_orbit_map(input: &str) -> HashMap<&str, &str> {
     let mut relations: HashMap<&str, &str> = HashMap::new();
 
     for line in input.lines() {
-        let mut test = line.split(")");
+        let mut test = line.split(')');
         let base = test.next().unwrap();
         let orbiter = test.next().unwrap();
 

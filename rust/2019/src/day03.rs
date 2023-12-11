@@ -5,7 +5,7 @@ fn get_all_positions(line: &str) -> HashMap<(i32, i32), u32> {
     let mut pointer = (0, 0);
     let mut counter: u32 = 0;
 
-    for instruction in line.split(",") {
+    for instruction in line.split(',') {
         let (direction, string_value) = instruction.split_at(1);
         let value: i32 = string_value.parse().expect("Expected a value");
         for _ in 0..value {
@@ -37,7 +37,7 @@ pub fn part1(input: &str) -> String {
 
     let result = distances.iter().min().expect("");
     assert!(result == &855, "Should be 855");
-    return result.to_string();
+    result.to_string()
 }
 
 pub fn part2(input: &str) -> String {
@@ -54,5 +54,5 @@ pub fn part2(input: &str) -> String {
 
     let result = distances.iter().min().expect("");
     assert!(result == &11238, "Should be 11238");
-    return result.to_string();
+    result.to_string()
 }

@@ -1,7 +1,7 @@
 use crate::intcode;
 
 pub fn part1(input: &str) -> String {
-    let mut values: Vec<&str> = input.split(",").collect();
+    let mut values: Vec<&str> = input.split(',').collect();
 
     // Change noun and verb as per instructions
     values[1] = "12";
@@ -13,7 +13,7 @@ pub fn part1(input: &str) -> String {
 }
 
 pub fn part2(input: &str) -> String {
-    let original_values: Vec<&str> = input.split(",").collect();
+    let original_values: Vec<&str> = input.split(',').collect();
 
     fn get_result(original_values: Vec<&str>) -> u32 {
         for noun in 0..99 {

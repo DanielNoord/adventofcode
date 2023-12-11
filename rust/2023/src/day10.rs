@@ -89,8 +89,8 @@ fn find_loop(
     );
 
     let mut steps = 0;
-    let mut new_map: HashMap<usize, HashSet<usize>> = HashMap::new();
-    new_map
+    let mut pipes_in_cycle: HashMap<usize, HashSet<usize>> = HashMap::new();
+    pipes_in_cycle
         .entry(position_of_s.0)
         .or_default()
         .insert(position_of_s.1);
@@ -120,7 +120,7 @@ fn find_loop(
                 }
             }
             if valid {
-                new_map
+                pipes_in_cycle
                     .entry(current_position.0)
                     .or_insert(HashSet::new())
                     .insert(current_position.1);
@@ -134,33 +134,45 @@ fn find_loop(
         steps += 1;
     }
 
-    (steps, map, new_map)
+    (steps, map, pipes_in_cycle)
 }
 
 pub fn part1(input: &str) -> String {
     let (steps, _, _) = find_loop(input);
     let final_score = steps.div_ceil(2);
-    // Should be 6716
+
+    assert!(final_score == 6717, "Should be 6717");
     final_score.to_string()
 }
 
 pub fn part2(input: &str) -> String {
-    let (pipes, map, new_map) = find_loop(input);
+    let (_, map, pipes_in_cycle) = find_loop(input);
     let mut total = 0;
-    let mut val = 0;
 
     let max_y = map.len() - 1;
     let max_x = map.get(&(max_y)).unwrap().len() - 1;
 
-    println!("{:?}", new_map);
-
-    for values in new_map.values() {
-        for value in values {
-            total += 1;
+    for y_coord in 0..max_y {
+        let mut seen_pipes_in_row = 0;
+        for x_coord in 0..max_x {
+            if let Some(entry) = pipes_in_cycle.get(&y_coord) {
+                if entry.contains(&x_coord) {
+                    match map.get(&y_coord).unwrap().get(&x_coord).unwrap() {
+                        Directions::Vertical
+                        | Directions::NorthEast
+                        | Directions::NorthWest
+                        | Directions::Start => seen_pipes_in_row += 1,
+                        _ => (),
+                    }
+                } else {
+                    total += seen_pipes_in_row % 2;
+                }
+            } else {
+                total += seen_pipes_in_row % 2;
+            }
         }
     }
-    // 1359 too high
-    // 394 is too high
-    // Should be 381, never reached
+
+    assert!(total == 381, "Should be 381");
     total.to_string()
 }

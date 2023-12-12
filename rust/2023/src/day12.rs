@@ -21,7 +21,6 @@ fn partition_numbers(numbers: u32, bins: u32, lowest: u32) -> HashSet<Vec<u32>> 
         _ => (),
     }
 
-    println!("{:?}", final_bins);
     final_bins
 }
 
@@ -37,7 +36,7 @@ pub fn part1(input: &str) -> String {
         let mut space_for_dividers: u32 = diagram_length as u32;
         let mut space_indicators: Vec<u32> = Vec::new();
 
-        for instruction in spacing.replace(",", " , ").split(" ") {
+        for instruction in spacing.replace(',', " , ").split(' ') {
             if instruction == "," {
                 dividers += 1;
                 space_for_dividers -= 1;
@@ -55,7 +54,6 @@ pub fn part1(input: &str) -> String {
         );
 
         for mut final_partition in partitions {
-            println!("{:?}", final_partition);
             let len = &final_partition.len();
             for (index, value) in final_partition.iter_mut().enumerate() {
                 if index != 0 && &index != len {
@@ -77,7 +75,6 @@ pub fn part1(input: &str) -> String {
                 continue;
             }
 
-            // println!("DIAGRAM {:?}", diagram);
             let mut good = true;
             for (c, d) in zip(current_diagram.chars(), diagram.chars()) {
                 match c {
@@ -96,8 +93,7 @@ pub fn part1(input: &str) -> String {
         }
     }
 
-    // 8060 too low
-    // Should be 8193
+    assert!(total == 8193, "Should be 8193");
     total.to_string()
 }
 

@@ -14,6 +14,7 @@ mod day13;
 mod day14;
 mod day15;
 mod day16;
+mod day17;
 
 pub fn get_funcs(day: u32, input: &str) -> (String, String) {
     match day {
@@ -33,6 +34,7 @@ pub fn get_funcs(day: u32, input: &str) -> (String, String) {
         14 => (day14::part1(input), day14::part2(input)),
         15 => (day15::part1(input), day15::part2(input)),
         16 => (day16::part1(input), day16::part2(input)),
+        17 => (day17::part1(input), day17::part2(input)),
         _ => panic!("Unsupported day {}", day),
     }
 }

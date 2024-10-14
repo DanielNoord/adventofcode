@@ -136,9 +136,9 @@ def part2(data: str) -> str | int:
             solution.released
             > best_solution_for_visiting_set[frozenset(solution.opened)]
         ):
-            best_solution_for_visiting_set[
-                frozenset(solution.opened)
-            ] = solution.released
+            best_solution_for_visiting_set[frozenset(solution.opened)] = (
+                solution.released
+            )
 
     # This only works because for the final input there are too many vertices to visit
     # For the test input the player/elephant will stay still and thus this doesn't work

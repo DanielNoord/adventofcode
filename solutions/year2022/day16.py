@@ -31,7 +31,7 @@ def _create_graph(data: str) -> dict[str, tuple[int, list[str]]]:
 
 
 def _calculate_routes(
-    graph: dict[str, tuple[int, list[str]]]
+    graph: dict[str, tuple[int, list[str]]],
 ) -> dict[str, dict[str, int]]:
     """Calculate the shortest path between all vertices that release >0 gas."""
     graph_without_weights = {k: set(v[1]) for k, v in graph.items()}
@@ -136,9 +136,9 @@ def part2(data: str) -> str | int:
             solution.released
             > best_solution_for_visiting_set[frozenset(solution.opened)]
         ):
-            best_solution_for_visiting_set[
-                frozenset(solution.opened)
-            ] = solution.released
+            best_solution_for_visiting_set[frozenset(solution.opened)] = (
+                solution.released
+            )
 
     # This only works because for the final input there are too many vertices to visit
     # For the test input the player/elephant will stay still and thus this doesn't work

@@ -93,8 +93,7 @@ class AdventOfCodeRunner:
             with open(
                 self.year_path / f"day{self.day}.py", mode="w", encoding="utf-8"
             ) as file:
-                file.write(
-                    f"""\
+                file.write(f"""\
 from __future__ import annotations
 
 
@@ -110,8 +109,7 @@ def part2(data: str) -> str | int:
         "Part 2 not implemented for {self.year} day {self.day}"
         "You can find it on https://adventofcode.com/{self.year}/day/{self.day}"
     )
-    """
-                )
+    """)
 
     def _get_input_files(self) -> str:
         """Load or fetch the input file, even if it doesn't exist yet.

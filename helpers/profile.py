@@ -31,8 +31,7 @@ class Profiler:
             self.day2()
             times_day2.append(time.monotonic_ns() - start_two)
             times_total.append(time.monotonic_ns() - start)
-        print(
-            f"""\
+        print(f"""\
 Statistics after {self.runs} runs:
 
 Part 1:
@@ -47,5 +46,4 @@ Total:
     Average: {sum(times_total) / len(times_total) / 1000:.3f}μs
     Min: {min(times_total) / 1000:.3f}μs
     Max: {max(times_total) / 1000:.3f}μs
-"""
-        )
+""")
